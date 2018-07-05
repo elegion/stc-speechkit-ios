@@ -1,4 +1,4 @@
-![itunesartwork 2x](https://cloud.githubusercontent.com/assets/20855360/23412071/78504558-fde5-11e6-9b27-363bc6b08364.png)
+![itunesartwork 2x](https://user-images.githubusercontent.com/20855360/42330705-644607a8-807c-11e8-8de8-5dede6f49ed6.png)
 
 STCSpeechKitDemo demonstrates a functionality of STCSpeechKit framework. 
 
