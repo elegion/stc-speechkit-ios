@@ -1,0 +1,1 @@
+../../../SpeechproSpeechKit/SpeechproSpeechKit/Common/Sockets/STCWebSocket.h

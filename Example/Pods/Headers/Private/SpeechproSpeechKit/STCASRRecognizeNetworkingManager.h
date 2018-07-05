@@ -1,0 +1,1 @@
+../../../SpeechproSpeechKit/SpeechproSpeechKit/RecognizeKit/Networking/Recognize/STCASRRecognizeNetworkingManager.h

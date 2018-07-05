@@ -1,0 +1,163 @@
+//
+//  RecognizeViewController.m
+//  SpeechKitDemo
+//
+//  Created by Soloshcheva Aleksandra on 28.05.2018.
+//  Copyright © 2018 Speech Tehnology Center. All rights reserved.
+//
+
+#import "RecognizeViewController.h"
+#import <SpeechproSpeechKit/SpeechproSpeechKit.h>
+
+@interface RecognizeViewController ()< UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic,weak) IBOutlet UISwitch *isSocketsSwitcher;
+@property (nonatomic,weak) IBOutlet UITextView *textView;
+@property (nonatomic,weak) IBOutlet UITableView *tableView;
+
+@property (nonatomic) STCRecognizer *recognizer;
+@property (nonatomic) STCStreamRecognizer *streamRecognizer;
+@property (nonatomic) NSArray<NSDictionary*>* packagesDataSource;
+
+@end
+
+@interface RecognizeViewController (Private)
+
+-(void)continueAsOnline;
+-(void)continueAsSocket;
+
+-(BOOL)isPackageSelected;
+-(NSString *)selectedPackage;
+
+-(void)showResult:(NSString *)result;
+
+-(void)startRecognizing;
+-(void)startStreamRecognizing;
+
+-(void)handleResult:(NSString *)result withError:(NSError *)error;
+
+@end
+
+@implementation RecognizeViewController
+
+-(void)viewDidLoad {
+    [super viewDidLoad];
+    self.recognizer = STCSpeechKit.sharedInstance.recognizer;
+    self.streamRecognizer = STCSpeechKit.sharedInstance.streamRecognizer;
+    
+    id<STCRecognizeKit> recognizeKit = STCSpeechKit.sharedInstance.recognizeKit;
+    [recognizeKit obtainPackagesWithCompletionHandler:^(NSError *error, NSArray<NSDictionary *> *result) {
+        self.packagesDataSource = [NSArray arrayWithArray:result];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    }];
+}
+
+-(IBAction)onPlay:(UIButton *)sender {
+    if (self.isSocketsSwitcher.isOn) {
+        [self continueAsSocket];
+    } else {
+        [self continueAsOnline];
+    }
+}
+
+#pragma mark - UITableViewDataSource
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView
+                 cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    static NSString *kPackageTableCellIdentifier = @"kPackageTableCellIdentifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kPackageTableCellIdentifier];
+    
+    if (cell) {
+        cell.textLabel.text = self.packagesDataSource[indexPath.row][@"package_id"];
+        cell.detailTextLabel.text = self.packagesDataSource[indexPath.row][@"name"];
+    } else {
+        return [[UITableViewCell alloc] init];
+    }
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section {
+    return self.packagesDataSource.count;
+}
+
+@end
+
+@implementation RecognizeViewController (Private)
+
+-(void)continueAsOnline {
+    if (self.isStopMode) {
+        [self showActivityIndicator];
+        [self.recognizer stop];
+    } else {
+        [self startRecognizing];
+        [self configureButtonAsStop];
+    }
+}
+
+-(void)continueAsSocket {
+    if (self.isStopMode) {
+        [self.streamRecognizer stopWithCompletionHandler:^(NSError *error, NSString *result) {
+            [self showResult:result];
+            [self configureButtonAsPlay];
+        }];
+    } else {
+        [self startStreamRecognizing];
+        [self configureButtonAsStop];
+    }
+}
+
+-(void)showResult:(NSString *)result {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.textView.text = result;
+    });
+}
+
+-(BOOL)isPackageSelected {
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+    return cell ? YES : NO;
+}
+
+-(NSString *)selectedPackage {
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
+    return cell ? cell.textLabel.text : nil;
+}
+
+-(void)startRecognizing {
+    if (self.isPackageSelected) {
+        [self.recognizer startWithPackage:self.selectedPackage withCompletionHandler:^(NSError *error, NSString *result) {
+            [self handleResult:result withError:error];
+        }];
+    } else {
+        [self.recognizer startWithCompletionHandler:^(NSError *error, NSString *result) {
+            [self handleResult:result withError:error];
+        }];
+    }
+}
+
+-(void)startStreamRecognizing {
+    if (self.isPackageSelected) {
+        [self.streamRecognizer startWithPackage:self.selectedPackage
+                          withCompletionHandler:^(NSError *error, NSString *result) {
+                              [self handleResult:result withError:error];
+                          }];
+    } else {
+        [self.streamRecognizer startWithCompletionHandler:^(NSError *error, NSString *result) {
+           [self handleResult:result withError:error];
+        }];
+    }
+}
+
+-(void)handleResult:(NSString *)result withError:(NSError *)error {
+    if (error) {
+        [self showError:error];
+        return;
+    }
+    [self hideActivityIndicator];
+    [self showResult:result];
+    [self configureButtonAsPlay];
+}
+
+@end

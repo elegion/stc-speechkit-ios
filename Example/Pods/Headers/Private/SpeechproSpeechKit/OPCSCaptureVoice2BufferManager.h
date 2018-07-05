@@ -1,0 +1,1 @@
+../../../SpeechproSpeechKit/SpeechproSpeechKit/Common/VoiceCapture/OPCSCaptureVoice2BufferManager.h

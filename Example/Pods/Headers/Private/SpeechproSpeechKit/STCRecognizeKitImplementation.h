@@ -1,0 +1,1 @@
+../../../SpeechproSpeechKit/SpeechproSpeechKit/RecognizeKit/STCRecognizeKitImplementation.h
