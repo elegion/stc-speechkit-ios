@@ -8,6 +8,6 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "9.0"
   s.source   = { :git => 'https://github.com/STC-VoiceKey/stc-speechkit-ios.git', :tag => s.version, :submodules => true }
   s.requires_arc = true
-  s.source_files = 'SpeechproSpeechKit/**/*.{h,m}'    
+  s.source_files = 'SpeechproSpeechKit/**/*.{h,m,c}'    
   s.public_header_files = 'SpeechproSpeechKit/*.h'
 end

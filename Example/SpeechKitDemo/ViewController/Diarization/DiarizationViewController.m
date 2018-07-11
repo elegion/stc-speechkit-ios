@@ -7,7 +7,7 @@
 //
 
 #import "DiarizationViewController.h"
-#import <SpeechproSpeechKit/SpeechproSpeechKit.h>
+#import <STC>
 
 @interface DiarizationViewController ()
 
