@@ -7,16 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "STCDiarizating.h"
+#import "STCRecognizing.h"
 
-@protocol STCAuthorizationData;
-@protocol STCSynthesizeKit;
-@protocol STCRecognizeKit;
-@protocol STCDiarizationKit;
-@protocol STCSynthesizing;
-@protocol STCStreamSynthesizing;
-@protocol STCDiarizating;
-@protocol STCRecognizing;
-@protocol STCStreamRecognizing;
+#import "STCAuthorizationData.h"
+#import "STCSynthesizeKit.h"
+#import "STCRecognizeKit.h"
+#import "STCDiarizationKit.h"
+#import "STCSynthesizing.h"
+#import "STCStreamSynthesizing.h"
+#import "STCStreamRecognizing.h"
 
 /**
     The 'STCSpeechKit' manages a settings of framework
