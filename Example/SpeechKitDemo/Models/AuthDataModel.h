@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <SpeechproSpeechKit/SpeechproSpeechKit.h>
+#import <STCAuthorizationData.h>
 
 @interface AuthDataModel : NSObject<STCAuthorizationData>
 

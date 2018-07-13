@@ -10,11 +10,11 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SpeechproSpeechKit:
-    :commit: 0dc581e5f03b0f50a761106ffb275d092e358085
+    :commit: c8daf713b8c57a5c11acc7c11afbcac1b60f2f84
     :git: https://github.com/STC-VoiceKey/stc-speechkit-ios.git
 
 SPEC CHECKSUMS:
-  SpeechproSpeechKit: f36987e2201c627dabbc5680e9a9ea316999e2b5
+  SpeechproSpeechKit: ecbac3df01f3e7f7b5f59e698fd478aff59adff6
 
 PODFILE CHECKSUM: 521f8847d2e4302dbe7db2d1de1be94140b2195a
 

@@ -7,7 +7,7 @@
 //
 
 #import "RecognizeViewController.h"
-#import <SpeechproSpeechKit/SpeechproSpeechKit.h>
+#import <STCSpeechKit.h>
 
 @interface RecognizeViewController ()< UITableViewDataSource, UITableViewDelegate>
 
@@ -15,8 +15,8 @@
 @property (nonatomic,weak) IBOutlet UITextView *textView;
 @property (nonatomic,weak) IBOutlet UITableView *tableView;
 
-@property (nonatomic) STCRecognizer *recognizer;
-@property (nonatomic) STCStreamRecognizer *streamRecognizer;
+@property (nonatomic) id<STCRecognizing> recognizer;
+@property (nonatomic) id<STCStreamRecognizing> streamRecognizer;
 @property (nonatomic) NSArray<NSDictionary*>* packagesDataSource;
 
 @end

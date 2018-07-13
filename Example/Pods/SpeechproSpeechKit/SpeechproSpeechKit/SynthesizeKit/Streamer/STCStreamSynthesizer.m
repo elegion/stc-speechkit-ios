@@ -20,8 +20,6 @@
 @property (nonatomic) STCAudioPlayer *audioplayer;
 @property (nonatomic) BOOL isPlayerInitialized;
 
-@property (nonatomic) NSMutableData *cumulativeData;
-
 @property (nonatomic) SynthesisCompletionHandler synthesizeDoneBlock;
 @property (nonatomic) STCSynthesizeKitImplementation *synthesizeKit;
 
@@ -36,7 +34,21 @@
 @implementation STCStreamSynthesizer
 
 - (void)cancel {
-#warning TODO
+    self.startingText = nil;
+    self.isPlayerInitialized = NO;
+    [self.audioplayer stopPlay];
+    self.audioplayer = nil;
+  //  [self.socket disconnect];
+    
+    __weak typeof(self) weakself = self;
+    [self.synthesizeKit closeStream:^(NSError *error, NSString *stream) {
+        if (error) {
+            weakself.synthesizeKit = nil;
+            weakself.synthesizeDoneBlock(error);
+            weakself.synthesizeDoneBlock = nil;
+            return;
+        }
+    }];
 }
 
 - (void)playText:(NSString *)text
@@ -69,36 +81,30 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
 @implementation STCStreamSynthesizer(Private)
 
 -(void)startStreamWithURL:(NSString *)urlString {
-    self.cumulativeData = [[NSMutableData alloc] init];
+    self.audioplayer = [[STCAudioPlayer alloc] initWithSampleRate:22050];
     
     __weak typeof(self) weakself = self;
     self.socket = [[STCWebSocket alloc] initWithURL:[NSURL URLWithString:urlString] protocols:@[@"chat",@"superchat"]];
     self.socket.onData = ^(NSData * _Nullable data) {
-        NSLog(@"%lu",data.length);
-
-                    if (!weakself.isPlayerInitialized) {
-                        weakself.isPlayerInitialized = YES;
-                        [weakself.audioplayer startPlayWithBufferByteSize:(int)data.length];
-                    }
-                    [weakself.audioplayer putAudioData:data.bytes withSize:(int)data.length];
-        
+        if (!weakself.isPlayerInitialized) {
+            [weakself.audioplayer startPlayWithBufferByteSize:(int)data.length];
+            weakself.isPlayerInitialized = YES;
+        }
+        [weakself.audioplayer putAudioData:data.bytes withSize:(int)data.length];
     };
     self.socket.onConnect = ^{
-        weakself.audioplayer = [[STCAudioPlayer alloc] initWithSampleRate:22050];
         [weakself.socket writeString:weakself.startingText];
-        NSLog(@"%@",weakself.startingText);
         [weakself.synthesizeKit closeStream:^(NSError *error, NSString *stream) {
-#warning TODO
+            if (error) {
+                weakself.synthesizeDoneBlock(error);
+                return;                
+            }
         }];
         
     };
     self.socket.onDisconnect = ^(NSError * _Nullable error) {
-        if (error) {
-            NSLog(@"%@",error);
+        if (weakself.synthesizeDoneBlock) {
             weakself.synthesizeDoneBlock(error);
-        } else {
-            NSLog(@"THE END");
-            #warning TODO
         }
     };
 

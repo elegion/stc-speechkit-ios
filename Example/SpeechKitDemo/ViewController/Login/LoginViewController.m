@@ -7,7 +7,7 @@
 //
 
 #import "LoginViewController.h"
-#import <SpeechproSpeechKit/SpeechproSpeechKit.h>
+#import <STCSpeechKit.h>
 #import "AuthDataModel.h"
 
 @interface LoginViewController ()

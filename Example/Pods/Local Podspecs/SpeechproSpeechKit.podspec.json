@@ -16,6 +16,6 @@
     "submodules": true
   },
   "requires_arc": true,
-  "source_files": "SpeechproSpeechKit/**/*.{h,m}",
+  "source_files": "SpeechproSpeechKit/**/*.{h,m,c}",
   "public_header_files": "SpeechproSpeechKit/*.h"
 }

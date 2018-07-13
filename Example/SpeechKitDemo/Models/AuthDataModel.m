@@ -7,7 +7,7 @@
 //
 
 #import "AuthDataModel.h"
-#import <SpeechproSpeechKit/SpeechproSpeechKit.h>
+#import <STCSpeechKit.h>
 
 @interface AuthDataModel()
 

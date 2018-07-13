@@ -7,7 +7,7 @@
 //
 #import <AVFoundation/AVFoundation.h>
 
-#import <SpeechproSpeechKit/SpeechproSpeechKit.h>
+#import <STCSpeechKit.h>
 
 #import "SynthesizeViewController.h"
 
@@ -18,9 +18,9 @@
 @interface SynthesizeViewController ()<UITableViewDataSource>
 
 @property (nonatomic) id<STCSynthesizeKit> synthesizeKit;
-@property (nonatomic) STCSynthesizer   *synthesizer;
+@property (nonatomic) id<STCSynthesizing>   synthesizer;
 
-@property (nonatomic) STCStreamSynthesizer *streamSynthesizer;
+@property (nonatomic) id<STCStreamSynthesizing> streamSynthesizer;
 
 @property (nonatomic,weak) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic,weak) IBOutlet UITableView *voiceTableView;
@@ -140,23 +140,36 @@
 @implementation SynthesizeViewController (Private)
 
 -(void)continueAsOnline {
-    [self.synthesizer playText:self.textView.text
-                     withVoice:self.voice withCompletionHandler:^(NSError *error) {
-                         if (error) {
-                             [self showError:error];
-                         }
-                     } ];
+    if (self.isPlayMode) {
+        [self.synthesizer playText:self.textView.text
+                         withVoice:self.voice withCompletionHandler:^(NSError *error) {
+                             if (error) {
+                                 [self showError:error];
+                             }
+                         } ];
+        [self configureButtonAsStop];
+    } else {
+        [self.synthesizer cancel];
+        [self configureButtonAsPlay];
+    }
 }
 
 -(void)continueAsSocket {
-    if (self.streamSynthesizer) {
-        self.streamSynthesizer = [[STCStreamSynthesizer alloc] init];
-        [self.streamSynthesizer playText:self.textView.text withVoice:self.voice
-                   withCompletionHandler:^(NSError *error) {
-                       if(error) {
-                           [self showError:error];
-                       }
-                   }];
+    if (self.isPlayMode) {
+        if (self.streamSynthesizer) {
+            self.streamSynthesizer = STCSpeechKit.sharedInstance.streamSynthesizer;
+            [self.streamSynthesizer playText:self.textView.text
+                                   withVoice:self.voice
+                       withCompletionHandler:^(NSError *error) {
+                           if(error) {
+                               [self showError:error];
+                           }
+                       }];
+        }
+        [self configureButtonAsStop];
+    } else {
+        [self.streamSynthesizer cancel];
+        [self configureButtonAsPlay];
     }
 }
 

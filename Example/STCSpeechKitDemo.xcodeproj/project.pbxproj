@@ -22,7 +22,6 @@
 		C97E5529208F32F000F58BEA /* LanguageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C97E5528208F32F000F58BEA /* LanguageModel.m */; };
 		C97E552C208F366900F58BEA /* VoiceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C97E552B208F366900F58BEA /* VoiceModel.m */; };
 		C98A222220E119D0003DCF7C /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C98A222120E119D0003DCF7C /* logo.png */; };
-		C98F53D420E9F33800D73B4C /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = C98F53D220E9F33800D73B4C /* ReadMe.md */; };
 		C99376F920BBF62500FA6DBB /* RecognizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C99376F820BBF62500FA6DBB /* RecognizeViewController.m */; };
 		C9C3488C20AC46D5007DB2E7 /* DiarizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C3488B20AC46D5007DB2E7 /* DiarizationViewController.m */; };
 /* End PBXBuildFile section */
@@ -86,7 +85,6 @@
 		C97E552A208F366900F58BEA /* VoiceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VoiceModel.h; sourceTree = "<group>"; };
 		C97E552B208F366900F58BEA /* VoiceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VoiceModel.m; sourceTree = "<group>"; };
 		C98A222120E119D0003DCF7C /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
-		C98F53D220E9F33800D73B4C /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		C99376F720BBF62500FA6DBB /* RecognizeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecognizeViewController.h; sourceTree = "<group>"; };
 		C99376F820BBF62500FA6DBB /* RecognizeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecognizeViewController.m; sourceTree = "<group>"; };
 		C9C3488A20AC46D5007DB2E7 /* DiarizationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiarizationViewController.h; sourceTree = "<group>"; };
@@ -177,7 +175,6 @@
 		C97E54732085CEAB00F58BEA = {
 			isa = PBXGroup;
 			children = (
-				C98F53D220E9F33800D73B4C /* ReadMe.md */,
 				C97E547E2085CEAB00F58BEA /* SpeechKitDemo */,
 				C97E54972085CEAD00F58BEA /* SpeechKitDemoTests */,
 				C97E54A22085CEAD00F58BEA /* SpeechKitDemoUITests */,
@@ -377,7 +374,6 @@
 				C97E548C2085CEAD00F58BEA /* LaunchScreen.storyboard in Resources */,
 				C97E54892085CEAD00F58BEA /* Assets.xcassets in Resources */,
 				C97E54872085CEAB00F58BEA /* Main.storyboard in Resources */,
-				C98F53D420E9F33800D73B4C /* ReadMe.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

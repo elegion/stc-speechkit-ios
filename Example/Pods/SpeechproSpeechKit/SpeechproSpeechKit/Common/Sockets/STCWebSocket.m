@@ -101,7 +101,7 @@ static const size_t  STCMaxFrameSize        = 32;
 - (instancetype)initWithURL:(NSURL *)url protocols:(NSArray*)protocols {
     if(self = [super init]) {
         self.certValidated = NO;
-        self.queue = dispatch_get_main_queue();
+        self.queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0); //dispatch_get_main_queue();
         self.url = url;
         self.readStack = [NSMutableArray new];
         self.inputQueue = [NSMutableArray new];
@@ -490,13 +490,18 @@ static const size_t  STCMaxFrameSize        = 32;
                 if(len > 0) {
                     NSData *data = [NSData dataWithBytes:(buffer+offset) length:len];
                     NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    NSLog(@"%@",str);
                     if(!str) {
                         code = STCCloseCodeProtocolError;
                     }
                 }
             }
-            [self writeError:code];
-            [self doDisconnect:[self errorWithDetail:@"continue frame before a binary or text frame" code:code]];
+            if (code==STCCloseCodeNormal) {
+                [self doDisconnect:nil];
+            } else {
+                [self writeError:code];
+                [self doDisconnect:[self errorWithDetail:@"continue frame before a binary or text frame" code:code]];
+            }
             return;
         }
         if(isControlFrame && payloadLen > 125) {
@@ -609,7 +614,7 @@ static const size_t  STCMaxFrameSize        = 32;
             });
         } else if(response.code == STCOpCodeBinaryFrame) {
             __weak typeof(self) weakSelf = self;
-            dispatch_async(self.queue,^{
+            dispatch_sync(self.queue,^{
                 if(weakSelf.onData) {
                     weakSelf.onData(data);
                 }

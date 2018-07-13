@@ -1,5 +1,5 @@
 //
-//  AudioPlayer.m
+//  STCAudioPlayer.m
 //  SpeechKit
 //
 //  Created by Soloshcheva Aleksandra on 22.05.2018.
@@ -66,8 +66,7 @@ void AQBufferCallback(void *                inUserData ,
 }
 
 -(void)stopPlay  {
-    close(pip_fd[0]);
-    close(pip_fd[1]);
+  //  close(pip_fd[1]);
     AudioQueueStop(queue, false);
     if (queue){
         AudioQueueDispose(queue, true);
@@ -77,34 +76,12 @@ void AQBufferCallback(void *                inUserData ,
     isInitialized = false;
 }
 
--(void)putAudioData:(short*)pcmData{
-    if (!isRunning) {
-        memcpy(mBuffers[index]->mAudioData, pcmData, bufferByteSize);
-        mBuffers[index]->mAudioDataByteSize = bufferByteSize;
-        mBuffers[index]->mPacketDescriptionCount = bufferByteSize/2;
-        AudioQueueEnqueueBuffer(queue, mBuffers[index], 0, NULL);
-        NSLog(@"fill audio queue buffer[%d]",index);
-        if(index == kNumberBuffers - 1) {
-            isRunning = true;
-            index = 0;
-            AudioQueueStart(queue, NULL);
-        }else {
-            index++;
-        }
-    }else {
-        if(write(pip_fd[1], pcmData, bufferByteSize) < 0){
-            NSLog(@"write to the pipe failed!");
-        }
-    }
-}
-
 -(void)putAudioData:(short*)pcmData withSize:(int)dataSize{
     if (!isRunning) {
         memcpy(mBuffers[index]->mAudioData, pcmData, dataSize);
         mBuffers[index]->mAudioDataByteSize = dataSize;
         mBuffers[index]->mPacketDescriptionCount = dataSize/2;
         AudioQueueEnqueueBuffer(queue, mBuffers[index], 0, NULL);
-        NSLog(@"fill audio queue buffer[%d]",index);
         if(index == kNumberBuffers - 1) {
             isRunning = true;
             index = 0;
@@ -112,7 +89,8 @@ void AQBufferCallback(void *                inUserData ,
         }else {
             index++;
         }
-    } else {
+    }
+    else {
         if(write(pip_fd[1], pcmData, dataSize) < 0){
             NSLog(@"write to the pipe failed!");
         }
