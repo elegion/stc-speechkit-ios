@@ -609,7 +609,7 @@ static const size_t  STCMaxFrameSize        = 32;
             });
         } else if(response.code == STCOpCodeBinaryFrame) {
             __weak typeof(self) weakSelf = self;
-            dispatch_async(self.queue,^{
+            dispatch_sync(self.queue,^{
                 if(weakSelf.onData) {
                     weakSelf.onData(data);
                 }
