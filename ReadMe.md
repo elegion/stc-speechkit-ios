@@ -3,7 +3,9 @@
 STCSpeechKitDemo demonstrates a functionality of STCSpeechKit framework. 
 
 ## How To Get Started
-- [Download OnePassDemoOnline](https://github.com/STC-VoiceKey/onepass-ios-client/archive/master.zip) and try out the included iOS example app
+STCSpeechKitDemo supports multiple methods for installing the library in a project.
+
+## Installation with CocoaPods
 
 ##Before you get started
 Review the [Documentation](https://stc-voicekey.github.io/stc-speechkit-android/index.html) for the library AP
