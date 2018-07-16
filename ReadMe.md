@@ -13,7 +13,7 @@ pod 'SpeechproSpeechKit', :git => 'https://github.com/STC-VoiceKey/stc-speechkit
 
 
 ##Before you get started
-Review the [Documentation](https://stc-voicekey.github.io/stc-speechkit-ios/Docs/html/index.html) for the library AP
+Review the [Documentation](https://stc-voicekey.github.io/stc-speechkit-ios/docs/html/index.html) for the library AP
 Register on the [website](https://cp.speechpro.com/) and get credentials
 
 ## Communication
