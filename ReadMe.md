@@ -4,8 +4,13 @@ STCSpeechKitDemo demonstrates a functionality of STCSpeechKit framework.
 
 ## How To Get Started
 STCSpeechKitDemo supports multiple methods for installing the library in a project.
+[Download STCSpeechKit](https://github.com/STC-VoiceKey/stc-speechkit-ios/archive/master.zip) and add SpeechproSpeechKit  source code folder to project
 
-## Installation with CocoaPods
+### Installation with CocoaPods
+To integrate STCSpeechKit into your Xcode project using CocoaPods, specify it in your Podfile:
+
+pod 'SpeechproSpeechKit', :git => 'https://github.com/STC-VoiceKey/stc-speechkit-ios.git'
+
 
 ##Before you get started
 Review the [Documentation](https://stc-voicekey.github.io/stc-speechkit-android/index.html) for the library AP
