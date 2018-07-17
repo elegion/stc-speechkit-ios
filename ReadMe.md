@@ -22,7 +22,57 @@ Register on the [website](https://cp.speechpro.com/) and get credentials
 - If you **have a feature request**, open an issue.
 
 ## Description
+How to use STC SpeechKit
 
+### Initialization STCSpeechKit
+```objective-c
+    STCSpeechKit  *speechKit = [STCSpeechKit sharedInstance];
+    AuthDataModel *dataModel = [[AuthDataModel alloc] initWithUsername:self.usernameTextField.text
+                                                          withPassword:self.passwordTextField.text
+                                                          withDomainid:self.domainidTextField.text];
+    [speechKit setAuthorizationData: dataModel];
+```
+
+### Web Socket Recognizer
+```objective-c
+id<STCStreamRecognizing> streamRecognizer = STCSpeechKit.sharedInstance.streamRecognizer;
+        
+[streamRecognizer startWithCompletionHandler:^(NSError *error, NSString *result) {
+           //handle result;
+        }];
+```
+
+### Recognizer
+```objective-c
+id<STCRecognizing> recognizer = STCSpeechKit.sharedInstance.recognizer;;
+
+[recognizer startWithCompletionHandler:^(NSError *error, NSString *result) {
+            //handle result;
+}];
+```
+
+### Web Socket Synthesizer
+
+```objective-c
+id<STCStreamSynthesizing> streamSynthesizer = STCSpeechKit.sharedInstance.streamSynthesizer;
+[streamSynthesizer playText:text withVoice:@"Carol"
+                       withCompletionHandler:^(NSError *error) {
+                           //handle result
+                       }];
+```
+
+
+
+Synthesizer
+```objective-c
+id<STCSynthesizing> synthesizer   = STCSpeechKit.sharedInstance.synthesizer;
+
+[synthesizer playText:text withVoice:self.voice withCompletionHandler:^(NSError *error) {
+			//handle result
+                         } ];
+```
+
+[synthesizer cancel];
 
 ## License
 
