@@ -21,16 +21,15 @@ Register on the [website](https://cp.speechpro.com/) and get credentials
 - If you **found a bug**, _and can provide steps to reliably reproduce it_, open an issue.
 - If you **have a feature request**, open an issue.
 
-## Description
-How to use STC SpeechKit
+## How to use STC SpeechKit
 
 ### Initialization STCSpeechKit
 ```objective-c
-    STCSpeechKit  *speechKit = [STCSpeechKit sharedInstance];
-    AuthDataModel *dataModel = [[AuthDataModel alloc] initWithUsername:self.usernameTextField.text
+STCSpeechKit  *speechKit = [STCSpeechKit sharedInstance];
+AuthDataModel *dataModel = [[AuthDataModel alloc] initWithUsername:self.usernameTextField.text
                                                           withPassword:self.passwordTextField.text
                                                           withDomainid:self.domainidTextField.text];
-    [speechKit setAuthorizationData: dataModel];
+[speechKit setAuthorizationData: dataModel];
 ```
 
 ### Web Socket Recognizer
@@ -61,19 +60,15 @@ id<STCStreamSynthesizing> streamSynthesizer = STCSpeechKit.sharedInstance.stream
                        }];
 ```
 
-
-
-Synthesizer
+### Synthesizer
 ```objective-c
 id<STCSynthesizing> synthesizer   = STCSpeechKit.sharedInstance.synthesizer;
 
 [synthesizer playText:text withVoice:self.voice withCompletionHandler:^(NSError *error) {
 			//handle result
                          } ];
-```
-
 [synthesizer cancel];
-
+```
 ## License
 
 Copyright (c) 2016 STC. Licensed under the FreeBSD <a href="https://onepass.tech/license-agreement.html">License</a>.
