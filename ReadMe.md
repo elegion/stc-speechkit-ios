@@ -13,11 +13,11 @@ pod 'SpeechproSpeechKit', :git => 'https://github.com/STC-VoiceKey/stc-speechkit
 
 
 ##Before you get started
-Review the [Documentation](https://stc-voicekey.github.io/stc-speechkit-ios/docs/html/index.html) for the library AP
+Review the [Documentation](https://stc-voicekey.github.io/stc-speechkit-ios/docs/html/index.html) for the library API.
 Register on the [website](https://cp.speechpro.com/) and get credentials
 
 ## Communication
-- If you'd like to **ask a general question**, email to voicekey@speerpro.com.
+- If you'd like to **ask a general question**, email to voicekey@speechpro.com.
 - If you **found a bug**, _and can provide steps to reliably reproduce it_, open an issue.
 - If you **have a feature request**, open an issue.
 
@@ -69,6 +69,16 @@ id<STCSynthesizing> synthesizer   = STCSpeechKit.sharedInstance.synthesizer;
                          } ];
 [synthesizer cancel];
 ```
+
+### Diarization
+```objective-c
+id<STCDiarizating> diarizator = STCSpeechKit.sharedInstance.diarizator;
+
+[diarizator startWithCompletionHandler:^(NSError *error, NSDictionary *result) {
+	//handle result
+        }];
+```
+
 ## License
 
 Copyright (c) 2016 STC. Licensed under the FreeBSD <a href="https://onepass.tech/license-agreement.html">License</a>.
