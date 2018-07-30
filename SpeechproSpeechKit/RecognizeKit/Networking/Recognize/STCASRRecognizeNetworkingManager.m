@@ -32,7 +32,7 @@
 }
 
 -(NSString *)package {
-    return ( _package==nil ) ? @"SpontRus-2" : _package;
+    return ( _package==nil ) ? @"TelecomRus" : _package;
 }
 
 -(NSString *)request {

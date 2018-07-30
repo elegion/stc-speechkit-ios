@@ -20,10 +20,11 @@
 @property (nonatomic) STCAudioPlayer *audioplayer;
 @property (nonatomic) BOOL isPlayerInitialized;
 
-@property (nonatomic) NSMutableData *cumulativeData;
-
 @property (nonatomic) SynthesisCompletionHandler synthesizeDoneBlock;
 @property (nonatomic) STCSynthesizeKitImplementation *synthesizeKit;
+
+@property (nonatomic) BOOL isPlaying;
+@property (nonatomic) BOOL isCanceling;
 
 @end
 
@@ -33,26 +34,44 @@
 
 @end
 
+@interface STCStreamSynthesizer(ConfigureSocket)
+
+-(void)configureOnData;
+-(void)configureOnConnect;
+-(void)configureOnDisconnect;
+
+@end
+
 @implementation STCStreamSynthesizer
 
 - (void)cancel {
-#warning TODO
+    self.isCanceling = YES;
+    [self.socket disconnect];
+    self.socket.onData = nil;
+    self.socket.onDisconnect = nil;
+    self.socket.onConnect = nil;
+    [self.audioplayer stopPlay];
 }
 
 - (void)playText:(NSString *)text
        withVoice:(NSString *)voice
 withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
+    self.isCanceling = NO;
+    self.isPlaying = NO;
     self.isPlayerInitialized = NO;
     self.startingText = text;
     self.synthesizeKit = [[STCSynthesizeKitImplementation alloc] init];
     self.synthesizeDoneBlock = synthesizeDoneBlock;
     [self.synthesizeKit streamWithVoice:voice
 withCompletionHandler:^(NSError *error, NSObject *result) {
+        if (self.isCanceling) {
+            return ;
+        }
+    
       if (error) {
           synthesizeDoneBlock(error);
           return ;
       }
-      
       [self startStreamWithURL:(NSString *)result];
       synthesizeDoneBlock(nil);
   }];
@@ -69,40 +88,60 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
 @implementation STCStreamSynthesizer(Private)
 
 -(void)startStreamWithURL:(NSString *)urlString {
-    self.cumulativeData = [[NSMutableData alloc] init];
     
-    __weak typeof(self) weakself = self;
-    self.socket = [[STCWebSocket alloc] initWithURL:[NSURL URLWithString:urlString] protocols:@[@"chat",@"superchat"]];
-    self.socket.onData = ^(NSData * _Nullable data) {
-        NSLog(@"%lu",data.length);
+    if (self.isCanceling) {
+        return;
+    }
+    NSLog(@"startStreamWithURL");
 
-                    if (!weakself.isPlayerInitialized) {
-                        weakself.isPlayerInitialized = YES;
-                        [weakself.audioplayer startPlayWithBufferByteSize:(int)data.length];
-                    }
-                    [weakself.audioplayer putAudioData:data.bytes withSize:(int)data.length];
+    self.socket = [[STCWebSocket alloc] initWithURL:[NSURL URLWithString:urlString] protocols:@[@"chat",@"superchat"]];
+    
+    [self configureOnData];
+    [self configureOnConnect];
+    [self configureOnDisconnect];
+    
+    [self.socket connect];
+}
+
+@end
+
+@implementation STCStreamSynthesizer(ConfigureSocket)
+
+-(void)configureOnData {
+    __weak typeof(self) weakself = self;
+    self.socket.onData = ^(NSData * _Nullable data) {
+        if (weakself.isCanceling) {
+            return ;
+        }
+        NSLog(@"%lu",data.length);
         
+        if (!weakself.isPlayerInitialized) {
+            weakself.isPlayerInitialized = YES;
+            [weakself.audioplayer startPlayWithBufferByteSize:(int)data.length];
+        }
+        [weakself.audioplayer putAudioData:data.bytes withSize:(int)data.length];
     };
+}
+
+-(void)configureOnConnect {
+    __weak typeof(self) weakself = self;
     self.socket.onConnect = ^{
         weakself.audioplayer = [[STCAudioPlayer alloc] initWithSampleRate:22050];
         [weakself.socket writeString:weakself.startingText];
         NSLog(@"%@",weakself.startingText);
-        [weakself.synthesizeKit closeStream:^(NSError *error, NSString *stream) {
-#warning TODO
-        }];
-        
+        [weakself.synthesizeKit closeStream:nil];
     };
+}
+
+-(void)configureOnDisconnect {
+    __weak typeof(self) weakself = self;
     self.socket.onDisconnect = ^(NSError * _Nullable error) {
         if (error) {
-            NSLog(@"%@",error);
-            weakself.synthesizeDoneBlock(error);
-        } else {
-            NSLog(@"THE END");
-            #warning TODO
+            if (weakself) {
+                weakself.synthesizeDoneBlock(error);
+            }
         }
     };
-
-    [self.socket connect];
 }
 
 @end

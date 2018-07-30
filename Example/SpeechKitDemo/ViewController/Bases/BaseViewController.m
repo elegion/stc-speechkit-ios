@@ -17,6 +17,21 @@
 
 @implementation BaseViewController 
 
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(applicationDidEnterBackground)
+                                               name:UIApplicationDidEnterBackgroundNotification
+                                             object:nil];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [NSNotificationCenter.defaultCenter removeObserver:self
+                                                  name:UIApplicationDidEnterBackgroundNotification
+                                                object:nil];
+}
+
 -(void)showActivityIndicator {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.activityIndicator startAnimating];
@@ -59,6 +74,10 @@
     
     [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)applicationDidEnterBackground {
+    
 }
 
 @end

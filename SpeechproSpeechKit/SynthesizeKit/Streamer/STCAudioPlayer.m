@@ -58,6 +58,10 @@ void AQBufferCallback(void *                inUserData ,
     }
     
     AudioQueueSetParameter( queue, kAudioQueueParam_Volume, 1.0);
+
+    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof (audioRouteOverride), &audioRouteOverride);
+
     isInitialized = true;
     int ret = pipe(pip_fd);
     if (ret == -1) {

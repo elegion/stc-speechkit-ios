@@ -496,7 +496,8 @@ static const size_t  STCMaxFrameSize        = 32;
                 }
             }
             [self writeError:code];
-            [self doDisconnect:[self errorWithDetail:@"continue frame before a binary or text frame" code:code]];
+            NSError *error = (code==STCCloseCodeNormal) ? nil : [self errorWithDetail:@"continue frame before a binary or text frame" code:code];
+            [self doDisconnect:error];
             return;
         }
         if(isControlFrame && payloadLen > 125) {

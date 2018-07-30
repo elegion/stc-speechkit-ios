@@ -21,4 +21,6 @@
 
 -(void)showError:(NSError *)error;
 
+-(void)applicationDidEnterBackground;
+
 @end

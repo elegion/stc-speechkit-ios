@@ -6,15 +6,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pods/SpeechproSpeechKit/SpeechproSpeechKit/Common/Sockets/STCWebSocket.m"
-            timestampString = "553433073.219695"
+            timestampString = "554396369.421084"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
             landmarkName = "-processRawMessage:length:"
             landmarkType = "7">
          </BreakpointContent>

@@ -13,6 +13,8 @@
 @interface STCSynthesizer()
 
 @property (nonatomic) AVPlayer *player;
+@property (nonatomic) BOOL isPlaying;
+@property (nonatomic) BOOL isCanceling;
 
 @end
 
@@ -27,44 +29,61 @@
 @implementation STCSynthesizer
 
 - (void)cancel {
-#warning TODO
+    self.isCanceling = YES;
+    if (self.isPlaying) {
+        [self.player pause];
+        self.player = nil;
+    }
 }
 
 -(void)playText:(NSString *)text withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
+    self.isPlaying = NO;
+    self.isCanceling = NO;
     STCSynthesizeKitImplementation *kit = [[STCSynthesizeKitImplementation alloc] init];
     [kit synthesizeText:text withCompletionHandler:^(NSError *error, NSObject *result) {
-                    if (error) {
-                        synthesizeDoneBlock(error);
-                        return ;
-                    }
-                    
-                    NSDictionary *voice = (NSDictionary *)result;
-                    NSData *data = [[NSData alloc] initWithBase64EncodedString:voice[@"data"] options:0];
-                    
-                    [self saveForData:data toPath:self.pathForVoice];
-                    
-                    synthesizeDoneBlock(nil);
-                    
-                    [self playFileFromPath:self.pathForVoice];
-                }];
+        if (self.isCanceling) {
+            return ;
+        }
+        
+        if (error) {
+            synthesizeDoneBlock(error);
+            return ;
+        }
+        
+        NSDictionary *voice = (NSDictionary *)result;
+        NSData *data = [[NSData alloc] initWithBase64EncodedString:voice[@"data"] options:0];
+        
+        [self saveForData:data toPath:self.pathForVoice];
+        
+        synthesizeDoneBlock(nil);
+        
+        [self playFileFromPath:self.pathForVoice];
+    }];
 }
+
 -(void)playText:(NSString *)text
       withVoice:(NSString *)voice
 withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
+    self.isPlaying = NO;
+    self.isCanceling = NO;
     STCSynthesizeKitImplementation *kit = [[STCSynthesizeKitImplementation alloc] init];
     [kit synthesizeText:text withVoice:voice
-                withCompletionHandler:^(NSError *error, NSObject *result) {
-                    if (error) {
-                        synthesizeDoneBlock(error);
-                        return ;
-                    }
-                    NSData *data = (NSData *)result;
-                    [self saveForData:data toPath:self.pathForVoice];
-                    
-                    synthesizeDoneBlock(nil);
-                    
-                    [self playFileFromPath:self.pathForVoice];
-                }];
+  withCompletionHandler:^(NSError *error, NSObject *result) {
+      if (self.isCanceling) {
+          return ;
+      }
+      
+      if (error) {
+          synthesizeDoneBlock(error);
+          return ;
+      }
+      NSData *data = (NSData *)result;
+      [self saveForData:data toPath:self.pathForVoice];
+      
+      synthesizeDoneBlock(nil);
+      
+      [self playFileFromPath:self.pathForVoice];
+  }];
 }
 
 @end
@@ -85,6 +104,7 @@ withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.player = [[AVPlayer alloc] initWithURL:url];
         [self.player play];
+        self.isPlaying = YES;
     });
 }
 

@@ -27,7 +27,7 @@
 -(void)continueAsSocket;
 
 -(BOOL)isPackageSelected;
--(NSString *)selectedPackage;
+-(NSDictionary *)selectedPackage;
 
 -(void)showResult:(NSString *)result;
 
@@ -120,9 +120,8 @@
     return cell ? YES : NO;
 }
 
--(NSString *)selectedPackage {
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.tableView.indexPathForSelectedRow];
-    return cell ? cell.textLabel.text : nil;
+-(NSDictionary *)selectedPackage {
+    return  [self.packagesDataSource objectAtIndex:self.tableView.indexPathForSelectedRow.row];
 }
 
 -(void)startRecognizing {
@@ -151,13 +150,17 @@
 }
 
 -(void)handleResult:(NSString *)result withError:(NSError *)error {
+    if (!self.isSocketsSwitcher.isOn) {
+        [self hideActivityIndicator];
+        [self configureButtonAsPlay];
+    }
+
     if (error) {
         [self showError:error];
-        return;
+        [self configureButtonAsPlay];
+    } else {
+        [self showResult:result];
     }
-    [self hideActivityIndicator];
-    [self showResult:result];
-    [self configureButtonAsPlay];
 }
 
 @end

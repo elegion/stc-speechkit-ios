@@ -16,8 +16,8 @@
 @property (nonatomic) RecognizingCompletionHandler recognizeCompletionHandler;
 @property (nonatomic) OPCSCaptureVoice2BufferManager *voiceManager;
 @property (nonatomic) STCRecognizeKitImplementation *recognizeKit;
-@property (nonatomic) STCWebSocket   *socket;
-@property (nonatomic) NSString *package;
+@property (nonatomic) STCWebSocket *socket;
+@property (nonatomic) NSDictionary *package;
 
 @property (nonatomic) BOOL isSocketConnected;
 @property (nonatomic) NSMutableData *voiceBuffer;
@@ -59,14 +59,12 @@
     self.package = nil;
     [self configureRecognizeKit];
     self.recognizeCompletionHandler = completionHandler;
-    [self.voiceManager record];
 }
 
--(void)startWithPackage:(NSString *)package withCompletionHandler:(RecognizingCompletionHandler)completionHandler{
+-(void)startWithPackage:(NSDictionary *)package withCompletionHandler:(RecognizingCompletionHandler)completionHandler{
     self.package = package;
     [self configureRecognizeKit];
     self.recognizeCompletionHandler = completionHandler;
-    [self.voiceManager record];
 }
 
 - (void)stop {
@@ -124,7 +122,7 @@
         self.recognizeCompletionHandler(error, nil);
         return ;
     }
-    
+    [self.voiceManager record];
     [self startSocketWithURL:result[@"url"]];
 }
 
@@ -163,7 +161,7 @@
     __weak typeof(self) weakself = self;
     self.recognizeKit = [[STCRecognizeKitImplementation alloc] init];
     if (self.package!=nil) {
-        [self.recognizeKit streamWithPackage:self.package
+        [self.recognizeKit streamWithPackage:self.package[@"package_id"]
                        withCompletionHandler:^(NSError *error, NSDictionary *result) {
                            [weakself handleResult:result withError:error];
                        }];

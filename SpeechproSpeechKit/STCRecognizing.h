@@ -33,7 +33,7 @@ typedef void (^RecognizingCompletionHandler) ( NSError *error, NSString *result)
  * @param package The specific package
  * @param completionHandler The recognition completion handler
  */
--(void)startWithPackage:(NSString *)package
+-(void)startWithPackage:(NSDictionary *)package
   withCompletionHandler:(RecognizingCompletionHandler)completionHandler;
 
 /**

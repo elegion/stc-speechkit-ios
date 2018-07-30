@@ -25,11 +25,11 @@
 
 -(NSDictionary *)body {
     return @{ @"package_id":self.package,
-              @"mime":@"audio/L16" };
+                    @"mime":@"audio/L16" };
 }
 
 -(NSString *)package {
-    return ( _package==nil ) ? @"CommonRespeakingRus-1" : _package;
+    return ( _package==nil ) ? @"CommonRus" : _package;
 }
 
 -(NSString *)request {

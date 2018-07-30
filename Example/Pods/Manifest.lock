@@ -10,7 +10,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SpeechproSpeechKit:
-    :commit: b813856ac700f2c3b9a6f2ca4d5591871d3b1f39
+    :commit: 37ba3b498e2b783e1ec0724ebb50eed43fbb83ef
     :git: https://github.com/STC-VoiceKey/stc-speechkit-ios.git
 
 SPEC CHECKSUMS:

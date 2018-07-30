@@ -26,6 +26,8 @@
 @property (nonatomic,weak) IBOutlet UITableView *voiceTableView;
 @property (nonatomic,weak) IBOutlet UITextView  *textView;
 @property (nonatomic,weak) IBOutlet UISwitch *isSocketsSwitcher;
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint *topKeyboardConstraint;
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint *botKeyboardConstraint;
 
 @property (nonatomic) NSMutableArray<VoiceModel *> *voices;
 
@@ -47,6 +49,15 @@
 
 @end
 
+@interface SynthesizeViewController (Keyboard)
+
+-(void)keyboardWillAppeared:(NSNotification *)notification;
+-(void)keyboardWillDiappeared:(NSNotification *)notification;
+
+-(void)hideKeyboard;
+
+@end
+
 @implementation SynthesizeViewController
 
 #pragma mark - Lifecyrcle
@@ -61,9 +72,51 @@
     self.streamSynthesizer = STCSpeechKit.sharedInstance.streamSynthesizer;
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(keyboardWillAppeared:)
+                                               name:UIKeyboardWillShowNotification
+                                             object:nil];
+    
+    [NSNotificationCenter.defaultCenter addObserver:self
+                                           selector:@selector(keyboardWillDiappeared:)
+                                               name:UIKeyboardWillHideNotification
+                                             object:nil];
+    
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+
+    [NSNotificationCenter.defaultCenter removeObserver:self
+                                                  name:UIKeyboardWillShowNotification
+                                                object:nil];
+    
+    [NSNotificationCenter.defaultCenter removeObserver:self
+                                                  name:UIKeyboardWillHideNotification
+                                                object:nil];
+    
+}
+
+-(void)applicationDidEnterBackground {
+    [self hideActivityIndicator];
+    
+    if (!self.isSocketsSwitcher.isOn) {
+        [self.synthesizer cancel];
+    } else {
+        [self.streamSynthesizer cancel];
+    }
+    [self configureButtonAsPlay];
+    
+    
+}
+
 #pragma mark - IBAction's
 
--(IBAction)onSynthesizeButtonTouchUpInside:(id)sender {    
+-(IBAction)onSynthesizeButtonTouchUpInside:(id)sender {
+    [self hideKeyboard];
     if (self.isSocketsSwitcher.isOn) {
         [self continueAsSocket];
     } else {
@@ -112,9 +165,11 @@
                 
                 [self.segmentedControl setSelectedSegmentIndex:0];
                 
-                 LanguageModel *firstLanguage = [[LanguageModel alloc] initWithDictionary:result[0]];
+                LanguageModel *firstLanguage = [[LanguageModel alloc] initWithDictionary:result[0]];
                 [self configureVoiceForLanguage:firstLanguage.name];
             });
+        } else {
+            [self showError:error];
         }
     }];
 }
@@ -141,14 +196,17 @@
 
 -(void)continueAsOnline {
     if (self.isPlayMode) {
+        [self showActivityIndicator];
         [self.synthesizer playText:self.textView.text
                          withVoice:self.voice withCompletionHandler:^(NSError *error) {
                              if (error) {
                                  [self showError:error];
+                                 [self showActivityIndicator];
                              }
-                         } ];
+                         }];
         [self configureButtonAsStop];
     } else {
+        [self hideActivityIndicator];
         [self.synthesizer cancel];
         [self configureButtonAsPlay];
     }
@@ -176,6 +234,30 @@
 -(NSString *)voice {
     UITableViewCell *cell = [self.voiceTableView cellForRowAtIndexPath:[self.voiceTableView indexPathForSelectedRow]];
     return cell.textLabel.text ? cell.textLabel.text : @"Alexander";
+}
+
+@end
+
+@implementation SynthesizeViewController (Keyboard)
+
+-(void)keyboardWillAppeared:(NSNotification *)notification {
+    self.topKeyboardConstraint.constant = -210;
+    self.botKeyboardConstraint.constant = 210;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+-(void)keyboardWillDiappeared:(NSNotification *)notification {
+    self.topKeyboardConstraint.constant = 0;
+    self.botKeyboardConstraint.constant = 0;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+-(void)hideKeyboard {
+    [self.textView resignFirstResponder];
 }
 
 @end
