@@ -150,17 +150,19 @@
 }
 
 -(void)handleResult:(NSString *)result withError:(NSError *)error {
-    if (!self.isSocketsSwitcher.isOn) {
-        [self hideActivityIndicator];
-        [self configureButtonAsPlay];
-    }
-
-    if (error) {
-        [self showError:error];
-        [self configureButtonAsPlay];
-    } else {
-        [self showResult:result];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.isSocketsSwitcher.isOn) {
+            [self hideActivityIndicator];
+            [self configureButtonAsPlay];
+        }
+        
+        if (error) {
+            [self showError:error];
+            [self configureButtonAsPlay];
+        } else {
+            [self showResult:result];
+        }
+    });
 }
 
 @end

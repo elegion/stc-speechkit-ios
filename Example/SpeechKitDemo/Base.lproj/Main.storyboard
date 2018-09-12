@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="M09-tm-pxR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.3.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="M09-tm-pxR">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x7G-9d-KNP">
-                                <rect key="frame" x="157" y="538" width="60" height="60"/>
+                                <rect key="frame" x="157.5" y="538" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="x7G-9d-KNP" secondAttribute="height" id="3jE-jh-1S4"/>
                                     <constraint firstAttribute="width" constant="60" id="e94-Lo-SE5"/>
@@ -80,7 +79,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zIm-Gf-QM5">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zIm-Gf-QM5">
                                 <rect key="frame" x="20" y="321" width="335" height="197"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -348,12 +347,12 @@
                                         </connections>
                                     </tableView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3ZA-BY-qdh">
-                                        <rect key="frame" x="28" y="360" width="320" height="170"/>
+                                        <rect key="frame" x="27.5" y="360" width="320" height="170"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="320" id="jlv-vE-SXO"/>
                                         </constraints>
-                                        <string key="text">Ten little nigger boys went out to dine; One choked his little self, and then there were nine. Nine little nigger boys sat up very late; One overslept himself, and then there were eight. Kight little nigger boys travelling in Devon; One said he'd stay there, and then there were seven. Seven little nigger boys chopping up sticks; One chopped himself in half, and then there were six. Six little nigger boys playing with a hive; A bumble-bee stung one, and then there were five. Five little nigger boys going in for law; One got in chancery, and then there were four. Four little nigger boys going out to sea; A red herring swallowed one, and then there were three. Three little nigger boys walking in the Zoo; A big bear hugged one, and then there were two. Two little nigger boys sitting in the sun; One got frizzled up, and then there was one. One little nigger boy living all alone; He got married, and then there were none.</string>
+                                        <mutableString key="text">Ten little nigger boys went out to dine; One choked his little self, and then there were nine. Nine little nigger boys sat up very late; One overslept himself, and then there were eight. Kight little nigger boys travelling in Devon; One said he'd stay there, and then there were seven. Seven little nigger boys chopping up sticks; One chopped himself in half, and then there were six. Six little nigger boys playing with a hive; A bumble-bee stung one, and then there were five. Five little nigger boys going in for law; One got in chancery, and then there were four. Four little nigger boys going out to sea; A red herring swallowed one, and then there were three. Three little nigger boys walking in the Zoo; A big bear hugged one, and then there were two. Two little nigger boys sitting in the sun; One got frizzled up, and then there was one. One little nigger boy living all alone; He got married, and then there were none</mutableString>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -374,7 +373,7 @@
                                         <color key="color" red="0.36078431370000003" green="0.41960784309999999" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
                                     </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecB-lj-EqU">
-                                        <rect key="frame" x="157" y="547" width="60" height="60"/>
+                                        <rect key="frame" x="157.5" y="547" width="60" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="Bw0-OS-qCQ"/>
                                             <constraint firstAttribute="width" secondItem="ecB-lj-EqU" secondAttribute="height" id="L0n-f5-EyE"/>

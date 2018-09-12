@@ -64,16 +64,18 @@
 }
 
 -(void)showError:(NSError *)error{
-    NSLog(@"%@",error);
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Ошибка"
-                                                                   message:error.localizedDescription
-                                                            preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-    
-    [alert addAction:defaultAction];
-    [self presentViewController:alert animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"%@",error);
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Ошибка"
+                                                                       message:error.localizedDescription
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    });
 }
 
 -(void)applicationDidEnterBackground {

@@ -71,7 +71,6 @@ void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueu
     
     self.source = OPCRAudioQueueSourceCreate(OPCRRecorderCallback,(__bridge void *)self, self.sampleRate);
     OPCSAudioQueueSourceStartRecord(self.source);
-    
 }
 
 -(void)stop {

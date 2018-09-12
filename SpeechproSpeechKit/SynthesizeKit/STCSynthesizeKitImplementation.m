@@ -74,7 +74,7 @@ withCompletionHandler:(SynthesizeCompletionHandler)completionHandler{
         completionHandler(STCError.unknownLanguageError, nil);
         return;
     }
-    
+        self.synthesizeCompletionHandler = completionHandler;
     [self obtainLanguagesWithCompletionHandler:^(NSError *error, NSArray<NSDictionary *> *result) {
         BOOL isLanguageExists = NO;
         for (NSDictionary *lang in result) {
@@ -110,6 +110,8 @@ withCompletionHandler:(SynthesizeCompletionHandler)completionHandler{
         completionHandler(STCError.unknownLanguageError, nil);
         return;
     }
+    
+    self.streamCompletionHandler = completionHandler;
     
     [self obtainLanguagesWithCompletionHandler:^(NSError *error, NSArray<NSDictionary *> *result) {
         BOOL isLanguageExists = NO;

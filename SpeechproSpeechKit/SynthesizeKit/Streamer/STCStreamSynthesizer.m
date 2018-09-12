@@ -50,7 +50,7 @@
     self.socket.onData = nil;
     self.socket.onDisconnect = nil;
     self.socket.onConnect = nil;
-    [self.audioplayer stopPlay];
+    [self.audioplayer stop];
 }
 
 - (void)playText:(NSString *)text
@@ -117,7 +117,7 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
         
         if (!weakself.isPlayerInitialized) {
             weakself.isPlayerInitialized = YES;
-            [weakself.audioplayer startPlayWithBufferByteSize:(int)data.length];
+            [weakself.audioplayer start];
         }
         [weakself.audioplayer putAudioData:data.bytes withSize:(int)data.length];
     };
@@ -129,7 +129,9 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
         weakself.audioplayer = [[STCAudioPlayer alloc] initWithSampleRate:22050];
         [weakself.socket writeString:weakself.startingText];
         NSLog(@"%@",weakself.startingText);
-        [weakself.synthesizeKit closeStream:nil];
+        [weakself.synthesizeKit closeStream:^(NSError *error, NSString *stream) {
+            
+        }];
     };
 }
 

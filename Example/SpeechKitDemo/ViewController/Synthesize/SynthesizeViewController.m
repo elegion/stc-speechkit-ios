@@ -75,6 +75,10 @@
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    [session setActive:YES error:nil];
+    
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(keyboardWillAppeared:)
                                                name:UIKeyboardWillShowNotification
@@ -261,3 +265,7 @@
 }
 
 @end
+
+/*
+ Ten little nigger boys went out to dine; One choked his little self, and then there were nine. Nine little nigger boys sat up very late; One overslept himself, and then there were eight. Kight little nigger boys travelling in Devon; One said he'd stay there, and then there were seven. Seven little nigger boys chopping up sticks; One chopped himself in half, and then there were six. Six little nigger boys playing with a hive; A bumble-bee stung one, and then there were five. Five little nigger boys going in for law; One got in chancery, and then there were four. Four little nigger boys going out to sea; A red herring swallowed one, and then there were three. Three little nigger boys walking in the Zoo; A big bear hugged one, and then there were two. Two little nigger boys sitting in the sun; One got frizzled up, and then there was one. One little nigger boy living all alone; He got married, and then there were none.
+ */

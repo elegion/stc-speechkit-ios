@@ -18,9 +18,14 @@ void AQBufferCallback(void *                inUserData ,
     
     if(THIS->isRunning) {
         inBuffer->mPacketDescriptionCount = THIS->bufferByteSize/2;
-        inBuffer->mAudioDataByteSize =THIS->bufferByteSize;
+        
+        NSLog(@"mPacketDescriptionCount %d",inBuffer->mPacketDescriptionCount);
+        
+        inBuffer->mAudioDataByteSize = THIS->bufferByteSize;
+        
         if(read(THIS->pip_fd[0], inBuffer->mAudioData, THIS->bufferByteSize) > 0 ){
             AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, NULL);
+            NSLog(@"AudioQueueEnqueueBuffer %d",inBuffer->mAudioDataByteSize);
         }
     }
 }
@@ -46,15 +51,15 @@ void AQBufferCallback(void *                inUserData ,
     return self;
 }
 
--(void)startPlayWithBufferByteSize:(int)byteSize {
+-(void)start {
     if (isInitialized) {
         return;
     }
     
-    bufferByteSize = byteSize;
+   // bufferByteSize = kBufferSize;
     AudioQueueNewOutput(&playFormat, AQBufferCallback, (__bridge void *)(self), nil, nil, 0, &queue);
     for (int i=0; i<kNumberBuffers; i++) {
-        AudioQueueAllocateBuffer( queue, byteSize, &mBuffers[i]);
+        AudioQueueAllocateBuffer( queue, kBufferSize, &mBuffers[i]);
     }
     
     AudioQueueSetParameter( queue, kAudioQueueParam_Volume, 1.0);
@@ -69,7 +74,7 @@ void AQBufferCallback(void *                inUserData ,
     }
 }
 
--(void)stopPlay  {
+-(void)stop  {
     close(pip_fd[0]);
     close(pip_fd[1]);
     AudioQueueStop(queue, false);
@@ -81,30 +86,11 @@ void AQBufferCallback(void *                inUserData ,
     isInitialized = false;
 }
 
--(void)putAudioData:(short*)pcmData{
-    if (!isRunning) {
-        memcpy(mBuffers[index]->mAudioData, pcmData, bufferByteSize);
-        mBuffers[index]->mAudioDataByteSize = bufferByteSize;
-        mBuffers[index]->mPacketDescriptionCount = bufferByteSize/2;
-        AudioQueueEnqueueBuffer(queue, mBuffers[index], 0, NULL);
-        NSLog(@"fill audio queue buffer[%d]",index);
-        if(index == kNumberBuffers - 1) {
-            isRunning = true;
-            index = 0;
-            AudioQueueStart(queue, NULL);
-        }else {
-            index++;
-        }
-    }else {
-        if(write(pip_fd[1], pcmData, bufferByteSize) < 0){
-            NSLog(@"write to the pipe failed!");
-        }
-    }
-}
-
 -(void)putAudioData:(short*)pcmData withSize:(int)dataSize{
     if (!isRunning) {
         memcpy(mBuffers[index]->mAudioData, pcmData, dataSize);
+        bufferByteSize = dataSize;
+        NSLog(@"putAudioData %d",dataSize);
         mBuffers[index]->mAudioDataByteSize = dataSize;
         mBuffers[index]->mPacketDescriptionCount = dataSize/2;
         AudioQueueEnqueueBuffer(queue, mBuffers[index], 0, NULL);
@@ -113,10 +99,12 @@ void AQBufferCallback(void *                inUserData ,
             isRunning = true;
             index = 0;
             AudioQueueStart(queue, NULL);
-        }else {
+        } else {
             index++;
         }
     } else {
+        NSLog(@"write putAudioData %d",dataSize);
+        bufferByteSize = dataSize;
         if(write(pip_fd[1], pcmData, dataSize) < 0){
             NSLog(@"write to the pipe failed!");
         }

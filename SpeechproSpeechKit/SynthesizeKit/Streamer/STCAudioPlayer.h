@@ -14,6 +14,7 @@
 
 #warning TODO docs
 #define kNumberBuffers 3
+#define kBufferSize 100000
 
 @interface STCAudioPlayer : NSObject
 {
@@ -32,9 +33,8 @@
 
 -(id)init;
 -(id)initWithSampleRate:(int)sampleRate;
--(void)startPlayWithBufferByteSize:(int)byteSize;
--(void)stopPlay;
--(void)putAudioData:(short*)pcmData;
+-(void)start;
+-(void)stop;
 -(void)putAudioData:(short*)pcmData withSize:(int)dataSize;
 
 @end
