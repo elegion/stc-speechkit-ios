@@ -214,19 +214,19 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="93L-29-9yB">
                                 <rect key="frame" x="40" y="184" width="295" height="110"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter username..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dDW-Sg-b5c">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="soloshcheva@speechpro.com" borderStyle="roundedRect" placeholder="Enter username..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dDW-Sg-b5c">
                                         <rect key="frame" x="0.0" y="0.0" width="295" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter password..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d7P-aY-AQZ">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="!CP4ddfafb" borderStyle="roundedRect" placeholder="Enter password..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d7P-aY-AQZ">
                                         <rect key="frame" x="0.0" y="40" width="295" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Domain Id..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CNu-KB-Jd0">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="290" borderStyle="roundedRect" placeholder="Domain Id..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CNu-KB-Jd0">
                                         <rect key="frame" x="0.0" y="80" width="295" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -280,6 +280,7 @@
                         <segue destination="MCf-qy-puN" kind="relationship" relationship="viewControllers" id="UPe-JJ-2ZR"/>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Fg2-Nn-xob"/>
                         <segue destination="mga-ch-heN" kind="relationship" relationship="viewControllers" id="Etl-9G-u1U"/>
+                        <segue destination="aG5-5t-k72" kind="relationship" relationship="viewControllers" id="XTm-SW-if6"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Td-3o-ntz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -438,7 +439,44 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-580" y="-282"/>
+            <point key="canvasLocation" x="145" y="-645"/>
+        </scene>
+        <!--ASP-->
+        <scene sceneID="jdz-C6-aAh">
+            <objects>
+                <viewController id="aG5-5t-k72" customClass="SynthesizeViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bek-Aa-e4f">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oB8-20-y2u">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <viewLayoutGuide key="safeArea" id="lgf-QJ-TZt"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="oB8-20-y2u" firstAttribute="leading" secondItem="ItE-PM-cE3" secondAttribute="leading" id="5Oo-cL-fK9"/>
+                            <constraint firstAttribute="bottom" secondItem="oB8-20-y2u" secondAttribute="bottom" id="aDY-JD-vHr"/>
+                            <constraint firstItem="oB8-20-y2u" firstAttribute="trailing" secondItem="ItE-PM-cE3" secondAttribute="trailing" id="oMs-VJ-veZ"/>
+                            <constraint firstItem="oB8-20-y2u" firstAttribute="top" secondItem="bek-Aa-e4f" secondAttribute="top" id="uuh-8b-Y2e"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ItE-PM-cE3"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="ASP" image="spoofing" id="5AJ-yR-Nhr">
+                        <color key="badgeColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                    </tabBarItem>
+                    <connections>
+                        <outlet property="botKeyboardConstraint" destination="aDY-JD-vHr" id="Sv8-6U-Onz"/>
+                        <outlet property="topKeyboardConstraint" destination="uuh-8b-Y2e" id="5o3-RW-GOP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gzd-cz-szK" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-818" y="-1095"/>
         </scene>
     </scenes>
     <resources>
@@ -446,6 +484,7 @@
         <image name="male" width="65" height="65"/>
         <image name="mic" width="200" height="200"/>
         <image name="rec" width="11" height="16"/>
+        <image name="spoofing" width="31" height="31"/>
         <image name="stop" width="199" height="199"/>
         <image name="syn" width="12" height="23"/>
     </resources>

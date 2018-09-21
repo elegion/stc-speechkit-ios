@@ -10,6 +10,7 @@
 		0E9F93C6F2C4E47A89990E55 /* libPods-STCSpeechKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9615DC605E50209A3A64622 /* libPods-STCSpeechKitDemo.a */; };
 		C949A76320D0F87B0000B056 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C949A76220D0F87B0000B056 /* BaseViewController.m */; };
 		C949A77620DD174F0000B056 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C949A77520DD174F0000B056 /* LoginViewController.m */; };
+		C9575715215109EE00316F5A /* AntiSpoofingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9575714215109EE00316F5A /* AntiSpoofingViewController.m */; };
 		C97E54812085CEAB00F58BEA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C97E54802085CEAB00F58BEA /* AppDelegate.m */; };
 		C97E54842085CEAB00F58BEA /* SynthesizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C97E54832085CEAB00F58BEA /* SynthesizeViewController.m */; };
 		C97E54872085CEAB00F58BEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97E54852085CEAB00F58BEA /* Main.storyboard */; };
@@ -62,6 +63,8 @@
 		C949A76220D0F87B0000B056 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		C949A77420DD174F0000B056 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C949A77520DD174F0000B056 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		C9575713215109EE00316F5A /* AntiSpoofingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AntiSpoofingViewController.h; sourceTree = "<group>"; };
+		C9575714215109EE00316F5A /* AntiSpoofingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AntiSpoofingViewController.m; sourceTree = "<group>"; };
 		C97E547C2085CEAB00F58BEA /* STCSpeechKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STCSpeechKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97E547F2085CEAB00F58BEA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C97E54802085CEAB00F58BEA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -172,6 +175,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C9575712215109A900316F5A /* AntiSpoofing */ = {
+			isa = PBXGroup;
+			children = (
+				C9575713215109EE00316F5A /* AntiSpoofingViewController.h */,
+				C9575714215109EE00316F5A /* AntiSpoofingViewController.m */,
+			);
+			path = AntiSpoofing;
+			sourceTree = "<group>";
+		};
 		C97E54732085CEAB00F58BEA = {
 			isa = PBXGroup;
 			children = (
@@ -245,6 +257,7 @@
 		C9D23DE820A1A12200BA11E4 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C9575712215109A900316F5A /* AntiSpoofing */,
 				C949A76020D0F62F0000B056 /* Bases */,
 				C949A77220DD16E50000B056 /* Login */,
 				C949A76420D103320000B056 /* Diarization */,
@@ -459,6 +472,7 @@
 				C97E54812085CEAB00F58BEA /* AppDelegate.m in Sources */,
 				C97E552C208F366900F58BEA /* VoiceModel.m in Sources */,
 				C97E55112088B09600F58BEA /* AuthDataModel.m in Sources */,
+				C9575715215109EE00316F5A /* AntiSpoofingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

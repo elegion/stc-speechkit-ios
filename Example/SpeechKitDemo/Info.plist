@@ -4,6 +4,8 @@
 <dict>
 	<key>ASRApiURL</key>
 	<string>https://cp.speechpro.com/vkasr/rest</string>
+	<key>ASVSApiURL</key>
+	<string>https://vkadmin4.stc/vkantispoofing/rest</string>
 	<key>AuthorizationData</key>
 	<dict>
 		<key>domainid</key>
@@ -46,6 +48,8 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Record</string>
+	<key>SessionApiURL</key>
+	<string>https://vkadmin4.stc/vksession/rest</string>
 	<key>TTSApiURL</key>
 	<string>https://cp.speechpro.com/vktts/rest</string>
 	<key>UIFileSharingEnabled</key>
