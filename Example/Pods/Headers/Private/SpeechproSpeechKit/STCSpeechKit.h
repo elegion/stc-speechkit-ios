@@ -1,1 +1,1 @@
-../../../SpeechproSpeechKit/SpeechproSpeechKit/STCSpeechKit.h
+../../../SpeechproSpeechKit/SpeechproSpeechKit/SpeechproSpeechKit/STCSpeechKit.h

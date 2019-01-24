@@ -1,1 +1,1 @@
-../../../SpeechproSpeechKit/SpeechproSpeechKit/STCAuthorizationData.h
+../../../SpeechproSpeechKit/SpeechproSpeechKit/SpeechproSpeechKit/STCAuthorizationData.h

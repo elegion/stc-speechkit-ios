@@ -39,7 +39,7 @@
         self.textView.text = @"";
         [self configureButtonAsStop];
         
-        [self.spoofer startWithCompletionHandler:^(NSError *error, NSDictionary *result) {
+        [self.spoofer startWithCompletionHandler:^(NSError *error, NSString *result) {
             NSString *resultString = error ? error.localizedDescription : [NSString stringWithFormat:@"%@",result];
             [self showResult:resultString];
             [self configureButtonAsPlay];

@@ -279,7 +279,6 @@
                         <segue destination="MCf-qy-puN" kind="relationship" relationship="viewControllers" id="UPe-JJ-2ZR"/>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Fg2-Nn-xob"/>
                         <segue destination="mga-ch-heN" kind="relationship" relationship="viewControllers" id="Etl-9G-u1U"/>
-                        <segue destination="aG5-5t-k72" kind="relationship" relationship="viewControllers" id="XTm-SW-if6"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Td-3o-ntz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -465,11 +464,11 @@
                                         </connections>
                                     </button>
                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="06z-ul-XZS">
-                                        <rect key="frame" x="169" y="104" width="37" height="37"/>
+                                        <rect key="frame" x="169" y="60" width="37" height="37"/>
                                         <color key="color" red="0.36078431370000003" green="0.41960784309999999" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
                                     </activityIndicatorView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yfM-2l-hBk">
-                                        <rect key="frame" x="40" y="463.5" width="295" height="54.5"/>
+                                        <rect key="frame" x="40" y="463.5" width="295" height="103.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
