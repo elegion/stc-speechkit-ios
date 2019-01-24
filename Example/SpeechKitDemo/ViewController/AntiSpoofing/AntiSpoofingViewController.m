@@ -12,26 +12,56 @@
 
 @interface AntiSpoofingViewController ()
 
+@property (nonatomic) id<STCASVSpoofing> spoofer;
+
+@property (nonatomic,weak) IBOutlet UITextView *textView;
+
+@end
+
+@interface AntiSpoofingViewController (Private)
+
+-(void)showResult:(NSString *)result;
+
 @end
 
 @implementation AntiSpoofingViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+     self.spoofer = STCSpeechKit.sharedInstance.spoofer;
 }
 
+-(IBAction)onPlay:(id)sender {
+    if (self.isStopMode) {
+        [self.spoofer stop];
+        [self showActivityIndicator];
+    } else {
+        self.textView.text = @"";
+        [self configureButtonAsStop];
+        
+        [self.spoofer startWithCompletionHandler:^(NSError *error, NSDictionary *result) {
+            NSString *resultString = error ? error.localizedDescription : [NSString stringWithFormat:@"%@",result];
+            [self showResult:resultString];
+            [self configureButtonAsPlay];
+            [self hideActivityIndicator];
+        }];
+    }
+}
+
+@end
+
+@implementation AntiSpoofingViewController (Private)
+
+-(void)showResult:(NSString *)result {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.textView.text = result;
+    });
+}
 
 @end
 
 /*
- @interface DiarizationViewController ()
- 
- @property (nonatomic) id<STCDiarizating> diarizator;
- 
- @property (nonatomic,weak) IBOutlet UITextView *textView;
- 
- @end
+
  
  @interface DiarizationViewController (Private)
  
@@ -40,12 +70,7 @@
  @end
  
  @implementation DiarizationViewController
- 
- - (void)viewDidLoad {
- [super viewDidLoad];
- self.diarizator = STCSpeechKit.sharedInstance.diarizator;
- self.textView.text = @"";
- }
+
  
  -(IBAction)onPlay:(id)sender {
  if (self.isStopMode) {
