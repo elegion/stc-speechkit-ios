@@ -15,6 +15,8 @@
 @property (nonatomic,weak) IBOutlet UITextView *textView;
 @property (nonatomic,weak) IBOutlet UITableView *tableView;
 
+@property (nonatomic,weak) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
+
 @property (nonatomic) id<STCRecognizing> recognizer;
 @property (nonatomic) id<STCStreamRecognizing> streamRecognizer;
 @property (nonatomic) NSArray<NSDictionary*>* packagesDataSource;
@@ -55,6 +57,12 @@
 }
 
 -(IBAction)onPlay:(UIButton *)sender {
+    
+    self.textViewHeightConstraint.constant = 200;
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+    }];
+    
     if (self.isSocketsSwitcher.isOn) {
         [self continueAsSocket];
     } else {
