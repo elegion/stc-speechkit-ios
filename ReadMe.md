@@ -23,6 +23,14 @@ Register on the [website](https://cp.speechpro.com/) and get credentials
 
 ## How to use STC SpeechKit
 
+### Configure Server STCSpeechKit
+Add server settings to your PLIST
+#ASRApiURL
+#ASVSApiURL
+#SessionApiURL
+#TTSApiURL
+#DiarizationApiUR
+
 ### Initialization STCSpeechKit
 ```objective-c
 STCSpeechKit  *speechKit = [STCSpeechKit sharedInstance];
