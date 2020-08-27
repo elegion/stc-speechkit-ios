@@ -25,11 +25,11 @@ Register on the [website](https://cp.speechpro.com/) and get credentials
 
 ### Configure Server STCSpeechKit
 Add server settings to your PLIST
-## ASRApiURL
-## ASVSApiURL
-## SessionApiURL
-## TTSApiURL
-## DiarizationApiUR
+-  ASRApiURL
+-  ASVSApiURL
+-  SessionApiURL
+-  TTSApiURL
+-  DiarizationApiUR
 
 ### Initialization STCSpeechKit
 ```objective-c
