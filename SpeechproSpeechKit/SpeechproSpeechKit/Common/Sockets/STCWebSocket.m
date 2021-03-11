@@ -198,7 +198,7 @@ static const size_t  STCMaxFrameSize        = 32;
     }
     CFHTTPMessageSetHeaderFieldValue(urlRequest,
                                      (__bridge CFStringRef)headerWSHostName,
-                                     (__bridge CFStringRef)[NSString stringWithFormat:@"%@:%@",self.url.host,port]);
+                                     (__bridge CFStringRef)[NSString stringWithFormat:@"%@",self.url.host]);
     CFHTTPMessageSetHeaderFieldValue(urlRequest,
                                      (__bridge CFStringRef)headerWSVersionName,
                                      (__bridge CFStringRef)headerWSVersionValue);
