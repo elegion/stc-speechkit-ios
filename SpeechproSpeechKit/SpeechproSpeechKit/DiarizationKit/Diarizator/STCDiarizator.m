@@ -53,7 +53,7 @@
     self.voiceManager = [[OPCSCaptureVoice2BufferManager alloc] initWithSampleRate:16000];
     
     __weak typeof(self) weakself = self;
-    self.voiceManager.loadDataBlock = ^(NSData *data, NSError *error) {
+    self.voiceManager.loadDataBlock = ^(NSData *data, NSError *error, Float32 peakPower) {
         if (error) {
             weakself.diarizationHandler( error, nil);
             return ;

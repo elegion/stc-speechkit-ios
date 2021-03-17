@@ -13,7 +13,7 @@ typedef NS_ENUM(NSUInteger, OPCSCaptureVoiceMode) {
     OPCSCaptureVoiceModePortion
 };
 
-typedef void (^LoadDataBlock) ( NSData *data, NSError *error);
+typedef void (^LoadDataBlock) ( NSData *data, NSError *error, Float32 peakPower);
 
 /**
  * Provides the voice resource.
