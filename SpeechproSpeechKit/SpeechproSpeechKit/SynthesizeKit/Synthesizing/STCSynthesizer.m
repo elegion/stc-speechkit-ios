@@ -102,17 +102,27 @@ withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock playComple
 
 -(void)playFileFromPath:(NSString *)path playCompletionHandle:(PlayCompletionHandler)playCompletionHandler{
     NSURL *url = [NSURL fileURLWithPath:self.pathForVoice];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         self.player = [[AVPlayer alloc] initWithURL:url];
         self.playCompletionHandler = playCompletionHandler;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(playerItemDidReachEnd:)
                                                      name:AVPlayerItemDidPlayToEndTimeNotification
                                                    object:[self.player currentItem]];
-        
         [self.player play];
         self.isPlaying = YES;
     });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        self.player = [[AVPlayer alloc] initWithURL:url];
+//        self.playCompletionHandler = playCompletionHandler;
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(playerItemDidReachEnd:)
+//                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+//                                                   object:[self.player currentItem]];
+//        NSLog(@"!!!test!!! start play %@", [NSDate new]);
+//        [self.player play];
+//        self.isPlaying = YES;
+//    });
 }
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
