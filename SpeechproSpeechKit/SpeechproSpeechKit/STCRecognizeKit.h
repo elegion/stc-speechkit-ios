@@ -64,7 +64,8 @@ withCompletionHandler:(RecognizeCompletionHandler)completionHandler;
  * @param completionHandler The response block called when the result is received
  */
 -(void)streamWithPackage:(NSString *)package
-   withCompletionHandler:(RecognizeCompletionHandler)completionHandler;
+   withCompletionHandler:(RecognizeCompletionHandler)completionHandler
+     startSessionHandler:(void (^)(void)) startSessionHandler;
 
 /**
  * Closes the socket

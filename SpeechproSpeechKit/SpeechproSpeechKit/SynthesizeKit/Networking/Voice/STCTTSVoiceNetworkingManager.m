@@ -20,7 +20,7 @@
 -(void)obtainVoicesForLanguage:(NSString *)language
          withCompletionHandler:(CompletionHandler)completionHandler {
     self.language = language;
-    [self obtainWithCompletionHandler:completionHandler];
+    [self obtainWithCompletionHandler:completionHandler startSessionHandler:nil];
 }
 
 -(NSString *)request {

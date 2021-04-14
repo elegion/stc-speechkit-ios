@@ -13,7 +13,7 @@
 @implementation STCTTSLanguageNetworkingManager
 
 -(void)obtainLanguagesWithCompletionHandler:(CompletionHandler)completionHandler {
-    [self obtainWithCompletionHandler:completionHandler];
+    [self obtainWithCompletionHandler:completionHandler startSessionHandler:nil];
 }
 
 -(NSString *)request {

@@ -65,14 +65,15 @@
 -(void)startStreamWithCompletionHandler:(CompletionHandler)completionHandler {
     self.package = nil;
     self.completionHandler = completionHandler;
-    [self obtainWithCompletionHandler:completionHandler];
+    [self obtainWithCompletionHandler:completionHandler startSessionHandler:nil];
 }
 
 -(void)startStreamWithPackage:(NSString *)package
-        withCompletionHandler:(CompletionHandler)completionHandler {
+        withCompletionHandler:(CompletionHandler)completionHandler
+          startSessionHandler:(void (^)(void)) startSessionHandler{
     self.package = package;
     self.completionHandler = completionHandler;
-    [self obtainWithCompletionHandler:completionHandler];
+    [self obtainWithCompletionHandler:completionHandler startSessionHandler:startSessionHandler];
 }
 
 -(void)closeStreamWithCompletionHandler:(CompletionHandler)completionHandler {

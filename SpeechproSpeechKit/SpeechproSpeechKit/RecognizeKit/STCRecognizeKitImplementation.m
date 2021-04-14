@@ -63,13 +63,14 @@ withCompletionHandler:(RecognizeCompletionHandler)completionHandler {
 }
 
 -(void)streamWithPackage:(NSString *)package
-   withCompletionHandler:(RecognizeCompletionHandler)completionHandler {
+   withCompletionHandler:(RecognizeCompletionHandler)completionHandler
+     startSessionHandler:(void (^)(void)) startSessionHandler{
     self.streamCompletionHandler = completionHandler;
     self.streamNetworkingManager = [[STCASRStreamNetworkingManager alloc] init];
-    [self.streamNetworkingManager startStreamWithPackage:package withCompletionHandler:^(NSError *error, NSObject *result) {
+    [self.streamNetworkingManager startStreamWithPackage:package withCompletionHandler:^(NSError *error, NSObject *result){
         NSDictionary *recognizeResult = (NSDictionary *)result;
         self.streamCompletionHandler(error, recognizeResult);
-    }];
+    } startSessionHandler: startSessionHandler];
 }
 
 -(void)closeStreamWithCompletionHandler:(RecognizeCompletionHandler)completionHandler  {

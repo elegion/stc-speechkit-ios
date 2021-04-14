@@ -41,7 +41,7 @@
     [self.voiceManager record];
 }
 
--(void)startWithPackage:(NSDictionary *)package withCompletionHandler:(RecognizingCompletionHandler)completionHandler {
+-(void)startWithPackage:(NSDictionary *)package withCompletionHandler:(RecognizingCompletionHandler)completionHandler startSessionHandler:(void (^)(void)) startSessionHandler {
     self.package = package;
     [self configureVoicerManagerWithSampleRate:[package[@"sample_rate"] integerValue]];
     self.recognizeCompletionHandler = completionHandler;
