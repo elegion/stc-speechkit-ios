@@ -1,1 +1,0 @@
-../../../SpeechproSpeechKit/SpeechproSpeechKit/SpeechproSpeechKit/SynthesizeKit/Streamer/STCStreamSynthesizer.h

@@ -1,1 +1,0 @@
-../../../SpeechproSpeechKit/SpeechproSpeechKit/SpeechproSpeechKit/STCSynthesizing.h

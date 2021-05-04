@@ -1,1 +1,0 @@
-../../../SpeechproSpeechKit/SpeechproSpeechKit/SpeechproSpeechKit/Common/Networking/STCNetworkingManager.h
