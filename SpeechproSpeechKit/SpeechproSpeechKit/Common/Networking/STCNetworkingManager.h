@@ -46,12 +46,12 @@ typedef void (^CompletionHandler) ( NSError *error, NSObject *result);
 /**
  * Obtains data with current networking request
  */
--(void)obtainWithCompletionHandler:(CompletionHandler)completionHandler;
+-(void)obtainWithCompletionHandler:(CompletionHandler)completionHandler startSessionHandler:(void (^)(void)) startSessionHandler;
 
 /**
  * Starts prerequest
  */
--(void)startingRequest;
+-(void)startingRequest:(void (^)(void)) startSessionHandler;
 
 /**
  * Returns the current request url

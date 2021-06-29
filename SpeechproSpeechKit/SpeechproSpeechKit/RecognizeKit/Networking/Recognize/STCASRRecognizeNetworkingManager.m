@@ -43,7 +43,7 @@
 -(void)recognizeSpeech:(NSString *)speech64Base
  withCompletionHandler:(CompletionHandler)completionHandler {
     self.voice = speech64Base;
-    [self obtainWithCompletionHandler:completionHandler];
+    [self obtainWithCompletionHandler:completionHandler  startSessionHandler:nil];
 }
 
 -(void)recognizeSpeech:(NSString *)speech64Base

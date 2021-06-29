@@ -34,7 +34,7 @@
 
 -(void)inspect:(NSData *)sound withCompletionHandler:(CompletionHandler)completionHandler {
     self.voiceData = [NSData dataWithData:sound];
-    [self obtainWithCompletionHandler:completionHandler];
+    [self obtainWithCompletionHandler:completionHandler  startSessionHandler:nil];
 }
 
 @end

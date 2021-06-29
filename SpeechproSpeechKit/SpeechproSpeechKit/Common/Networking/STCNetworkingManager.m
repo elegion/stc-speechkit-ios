@@ -27,7 +27,7 @@ static NSString * _Nonnull kSessionIdURLParam   = @"session_id";
 @interface STCNetworkingManager(Private)
 
 -(NSDictionary *)authorizationDataAsBody;
--(void)startSession;
+-(void)startSession:(void (^)(void)) startSessionHandler;
 -(void)closeSession;
 
 @end
@@ -42,14 +42,14 @@ static NSString * _Nonnull kSessionIdURLParam   = @"session_id";
     return self;
 }
 
--(void)obtainWithCompletionHandler:(CompletionHandler)completionHandler{
+-(void)obtainWithCompletionHandler:(CompletionHandler)completionHandler startSessionHandler:(void (^)(void)) startSessionHandler{
     self.completionHandler = completionHandler;
-    [self startingRequest];
+    [self startingRequest: startSessionHandler];
 }
 
--(void)startingRequest {
+-(void)startingRequest:(void (^)(void)) startSessionHandler {
     if ( self.sessionId == nil ) {
-        [self startSession];
+        [self startSession: startSessionHandler];
         return;
     }
     [self progressRequest];
@@ -102,7 +102,7 @@ static NSString * _Nonnull kSessionIdURLParam   = @"session_id";
 
 @implementation STCNetworkingManager(Private)
 
--(void)startSession {
+-(void)startSession:(void (^)(void)) startSessionHandler {
     NSLog(@"start session %@",self.authorizationDataAsBody);
     NSURLSessionDataTask *task = [self taskPostRequestForURLString:self.sessionRequest
                                                           withBody:self.authorizationDataAsBody
@@ -116,11 +116,17 @@ static NSString * _Nonnull kSessionIdURLParam   = @"session_id";
                                                          self.completionHandler(responseError, nil);
                                                          return ;
                                                      }
+        
+        
                                                      
                                                      NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data
                                                                                                           options:0
                                                                                                             error:nil];
                                                      self.sessionId = json[kSessionIdURLParam];
+        
+        if (startSessionHandler != nil) {
+            startSessionHandler();
+        }
                                                      
                                                      [self progressRequest];
     }];

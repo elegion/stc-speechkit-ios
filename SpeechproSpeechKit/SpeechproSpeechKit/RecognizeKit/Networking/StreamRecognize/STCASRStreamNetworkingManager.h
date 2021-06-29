@@ -25,7 +25,8 @@
  * @param completionHandler The recognition completion handler
  */
 -(void)startStreamWithPackage:(NSString *)package
-        withCompletionHandler:(CompletionHandler)completionHandler;
+        withCompletionHandler:(CompletionHandler)completionHandler
+          startSessionHandler:(void (^)(void)) startSessionHandler;
 
 /**
  * Closes the stream transaction and provides the finished result
