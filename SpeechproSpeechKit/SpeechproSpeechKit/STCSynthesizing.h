@@ -17,6 +17,7 @@
  * @param error The error
  */
 typedef void (^SynthesisCompletionHandler) (NSError *error);
+typedef void (^PlayCompletionHandler) (void);
 
 @protocol STCSynthesizing <NSObject> 
 
@@ -26,9 +27,7 @@ typedef void (^SynthesisCompletionHandler) (NSError *error);
  * @param voice The voice for synthesis
  * @param synthesizeCompletionHandler The synthesize completion handler
  */
-        - (void)playText:(NSString *)text
-               withVoice:(NSString *)voice
-   withCompletionHandler:(SynthesisCompletionHandler)synthesizeCompletionHandler;
+- (void)playText:(NSString *)text withVoice:(NSString *)voice withCompletionHandler:(SynthesisCompletionHandler)synthesizeCompletionHandler playCompletionHandle:(PlayCompletionHandler)playCompletionHandler;
 
 /**
  * Cancel all operations

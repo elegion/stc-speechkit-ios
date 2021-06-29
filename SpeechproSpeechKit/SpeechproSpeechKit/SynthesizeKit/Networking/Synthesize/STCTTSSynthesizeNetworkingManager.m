@@ -42,6 +42,6 @@ withCompletionHandler:(CompletionHandler)completionHandler {
     
     NSLog(@"%@",[text language]);
     
-    [self obtainWithCompletionHandler:completionHandler];
+    [self obtainWithCompletionHandler:completionHandler startSessionHandler:nil];
 }
 @end

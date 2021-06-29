@@ -34,11 +34,12 @@
 }
 
 -(void)streamWithVoice:(NSString *)voice
- withCompletionHandler:(CompletionHandler)completionHandler {
+ withCompletionHandler:(CompletionHandler)completionHandler
+   startSessionHandler:(void (^)(void)) startSessionHandler{
     self.voice = voice;
     self.completionHandler = completionHandler;
     
-    [self startingRequest];
+    [self startingRequest: startSessionHandler];
 }
 
 -(void)progressRequest {

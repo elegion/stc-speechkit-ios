@@ -27,7 +27,7 @@
 @interface STCStreamRecognizer(Configure)
 
 -(void)configureVoiceManager;
--(void)configureRecognizeKit;
+-(void)configureRecognizeKit:(void (^)(void)) startSessionHandler;
 
 @end
 
@@ -61,9 +61,9 @@
     self.recognizeCompletionHandler = completionHandler;
 }
 
--(void)startWithPackage:(NSDictionary *)package withCompletionHandler:(RecognizingCompletionHandler)completionHandler{
+-(void)startWithPackage:(NSDictionary *)package withCompletionHandler:(RecognizingCompletionHandler)completionHandler startSessionHandler:(void (^)(void)) startSessionHandler{
     self.package = package;
-    [self configureRecognizeKit];
+    [self configureRecognizeKit: startSessionHandler];
     self.recognizeCompletionHandler = completionHandler;
 }
 
@@ -157,14 +157,14 @@
     };
 }
 
--(void)configureRecognizeKit {
+-(void)configureRecognizeKit:(void (^)(void)) startSessionHandler {
     __weak typeof(self) weakself = self;
     self.recognizeKit = [[STCRecognizeKitImplementation alloc] init];
     if (self.package!=nil) {
         [self.recognizeKit streamWithPackage:self.package[@"package_id"]
                        withCompletionHandler:^(NSError *error, NSDictionary *result) {
                            [weakself handleResult:result withError:error];
-                       }];
+        } startSessionHandler: startSessionHandler];
     } else {
         [self.recognizeKit streamWithCompletionHandler:^(NSError *error, NSDictionary *result) {
             [weakself handleResult:result withError:error];

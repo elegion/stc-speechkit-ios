@@ -157,7 +157,7 @@ withCompletionHandler:(StreamCompletionHandler)completionHandler {
 
                            NSString *url = [((NSDictionary *)result) objectForKey:@"url"];
                            self.streamCompletionHandler(nil, url);
-                       }];
+                       } startSessionHandler:nil];
 }
 
 -(void)closeStream:(StreamCompletionHandler)completionHandler {

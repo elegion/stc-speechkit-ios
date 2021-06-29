@@ -15,13 +15,14 @@
 @property (nonatomic) AVPlayer *player;
 @property (nonatomic) BOOL isPlaying;
 @property (nonatomic) BOOL isCanceling;
+@property (nonatomic) PlayCompletionHandler   playCompletionHandler;
 
 @end
 
 @interface STCSynthesizer(Private)
 
 -(BOOL)saveForData:(NSData *)data toPath:(NSString *)path;
--(void)playFileFromPath:(NSString *)path;
+-(void)playFileFromPath:(NSString *)path playCompletionHandle:(PlayCompletionHandler)playCompletionHandler;
 -(NSString *)pathForVoice;
 
 @end
@@ -57,13 +58,13 @@
         
         synthesizeDoneBlock(nil);
         
-        [self playFileFromPath:self.pathForVoice];
+        [self playFileFromPath:self.pathForVoice playCompletionHandle:nil];
     }];
 }
 
 -(void)playText:(NSString *)text
       withVoice:(NSString *)voice
-withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
+withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock playCompletionHandle:(PlayCompletionHandler)playCompletionHandler{
     self.isPlaying = NO;
     self.isCanceling = NO;
     STCSynthesizeKitImplementation *kit = [[STCSynthesizeKitImplementation alloc] init];
@@ -82,7 +83,7 @@ withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
       
       synthesizeDoneBlock(nil);
       
-      [self playFileFromPath:self.pathForVoice];
+      [self playFileFromPath:self.pathForVoice playCompletionHandle:playCompletionHandler];
   }];
 }
 
@@ -99,13 +100,38 @@ withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
     return success;
 }
 
--(void)playFileFromPath:(NSString *)path {
+-(void)playFileFromPath:(NSString *)path playCompletionHandle:(PlayCompletionHandler)playCompletionHandler{
     NSURL *url = [NSURL fileURLWithPath:self.pathForVoice];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         self.player = [[AVPlayer alloc] initWithURL:url];
+        self.playCompletionHandler = playCompletionHandler;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerItemDidReachEnd:)
+                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+                                                   object:[self.player currentItem]];
         [self.player play];
         self.isPlaying = YES;
     });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        self.player = [[AVPlayer alloc] initWithURL:url];
+//        self.playCompletionHandler = playCompletionHandler;
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(playerItemDidReachEnd:)
+//                                                     name:AVPlayerItemDidPlayToEndTimeNotification
+//                                                   object:[self.player currentItem]];
+//        NSLog(@"!!!test!!! start play %@", [NSDate new]);
+//        [self.player play];
+//        self.isPlaying = YES;
+//    });
+}
+
+- (void)playerItemDidReachEnd:(NSNotification *)notification {
+    
+    if(self.playCompletionHandler != nil){
+        self.playCompletionHandler();
+        self.playCompletionHandler = nil;
+    }
+    
 }
 
 @end

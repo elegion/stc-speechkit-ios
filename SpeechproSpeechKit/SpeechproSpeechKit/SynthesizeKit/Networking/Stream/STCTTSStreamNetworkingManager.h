@@ -22,7 +22,8 @@
  * @param completionHandler The synthesis completion handler
  */
 -(void)streamWithVoice:(NSString *)voice
- withCompletionHandler:(CompletionHandler)completionHandler;
+ withCompletionHandler:(CompletionHandler)completionHandler
+   startSessionHandler:(void (^)(void)) startSessionHandler;
 
 /**
  * Closes the stream transaction 

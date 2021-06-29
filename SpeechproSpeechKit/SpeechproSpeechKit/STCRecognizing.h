@@ -34,7 +34,8 @@ typedef void (^RecognizingCompletionHandler) ( NSError *error, NSString *result)
  * @param completionHandler The recognition completion handler
  */
 -(void)startWithPackage:(NSDictionary *)package
-  withCompletionHandler:(RecognizingCompletionHandler)completionHandler;
+  withCompletionHandler:(RecognizingCompletionHandler)completionHandler
+    startSessionHandler:(void (^)(void)) startSessionHandler;
 
 /**
  * Stops recording and recognizing
