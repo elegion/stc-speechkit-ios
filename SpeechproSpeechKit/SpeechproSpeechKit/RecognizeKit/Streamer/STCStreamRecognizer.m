@@ -57,7 +57,7 @@
 
 -(void)startWithCompletionHandler:(RecognizingCompletionHandler)completionHandler {
     self.package = nil;
-    [self configureRecognizeKit];
+    [self configureRecognizeKit: nil];
     self.recognizeCompletionHandler = completionHandler;
 }
 
