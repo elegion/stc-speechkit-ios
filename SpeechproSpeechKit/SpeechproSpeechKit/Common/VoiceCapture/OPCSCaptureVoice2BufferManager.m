@@ -26,11 +26,11 @@ static NSString *kVoiceNoiseLimitName = @"VoiceNoiseLimit";
 @interface OPCSCaptureVoice2BufferManager(PrivateMethods)
 
 -(NSMutableData *)addWavHeader:(NSData *)wav;
--(void)addData:(OPCSAudioQueueRecorderRef)recorderRef fromBuffer:(AudioQueueBufferRef)bufRef;
+-(void)addData:(OPCSAudioQueueRecorderRef)recorderRef fromBuffer:(AudioQueueBufferRef)bufRef peakPower: (Float32)peakPower;
 
 @end
 
-void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueue, AudioQueueBufferRef bufRef);
+void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueue, AudioQueueBufferRef bufRef, Float32 peakPower);
 
 @implementation OPCSCaptureVoice2BufferManager
 
@@ -59,7 +59,7 @@ void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueu
             if (self.loadDataBlock) {
                 self.loadDataBlock(nil,[NSError errorWithDomain:@"com.onepass.captureresource"
                                                            code:400
-                                                       userInfo:@{ NSLocalizedDescriptionKey: @"Record is running exeption"}]);
+                                                       userInfo:@{ NSLocalizedDescriptionKey: @"Record is running exeption"}], 0);
             }
             return;
         }
@@ -79,7 +79,7 @@ void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueu
             self.isRecording = NO;
             OPCSAudioQueueSourceStopRecord(self.source);
             if (self.loadDataBlock && (self.mode==OPCSCaptureVoiceModeNormal) ) {
-                self.loadDataBlock([self addWavHeader:self.voiceBuffer],nil);
+                self.loadDataBlock([self addWavHeader:self.voiceBuffer],nil, 0);
             }
         }
     }
@@ -128,14 +128,14 @@ void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueu
     return wavHeader;
 }
 
--(void)addData:(OPCSAudioQueueRecorderRef)recorderRef fromBuffer:(AudioQueueBufferRef)bufRef{
+-(void)addData:(OPCSAudioQueueRecorderRef)recorderRef fromBuffer:(AudioQueueBufferRef)bufRef peakPower: (Float32)peakPower {
     if(self.isRecording) {
         @synchronized (self) {
             if (self.mode==OPCSCaptureVoiceModeNormal) {
                 [self.voiceBuffer appendBytes: bufRef->mAudioData length: bufRef->mAudioDataByteSize];
             } else {
                 NSData *portion = [NSData dataWithBytes:bufRef->mAudioData length:bufRef->mAudioDataByteSize];
-                self.loadDataBlock(portion, nil);
+                self.loadDataBlock(portion, nil, peakPower);
             }
         }
     }
@@ -143,11 +143,11 @@ void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueu
 
 @end
 
-void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueue, AudioQueueBufferRef bufRef) {
+void OPCRRecorderCallback(OPCSAudioQueueRecorderRef ref, AudioQueueRef audioQueue, AudioQueueBufferRef bufRef, Float32 peakPower) {
     if (ref && ref->userInfo) {
         OPCSCaptureVoice2BufferManager* manager = (__bridge OPCSCaptureVoice2BufferManager*)ref->userInfo;
         if(ref->queue != audioQueue) return;
         
-        [manager addData:ref fromBuffer:bufRef];
+        [manager addData:ref fromBuffer:bufRef  peakPower:peakPower];
     }
 }

@@ -13,6 +13,7 @@
 
 @interface STCStreamRecognizer()
 
+@property (nonatomic) PeakPowerHandler peakPowerHandler;
 @property (nonatomic) RecognizingCompletionHandler recognizeCompletionHandler;
 @property (nonatomic) OPCSCaptureVoice2BufferManager *voiceManager;
 @property (nonatomic) STCRecognizeKitImplementation *recognizeKit;
@@ -48,6 +49,7 @@
 -(id)init {
     self = [super init];
     if (self) {
+        self.peakPowerHandler = nil;
         [self configureVoiceManager];
         self.isSocketConnected = NO;
         self.voiceBuffer = [[NSMutableData alloc] init];
@@ -65,6 +67,10 @@
     self.package = package;
     [self configureRecognizeKit: startSessionHandler];
     self.recognizeCompletionHandler = completionHandler;
+}
+
+- (void)setUpPeakPowerHandler: (PeakPowerHandler)peakPowerHandler {
+    self.peakPowerHandler = peakPowerHandler;
 }
 
 - (void)stop {
@@ -147,10 +153,13 @@
 -(void)configureVoiceManager {
     __weak typeof(self) weakself = self;
     self.voiceManager = [[OPCSCaptureVoice2BufferManager alloc] initWithSampleRate:16000 withMode:OPCSCaptureVoiceModePortion];
-    self.voiceManager.loadDataBlock = ^(NSData *data, NSError *error) {
+    self.voiceManager.loadDataBlock = ^(NSData *data, NSError *error, Float32 peakPower) {
         if (error) {
             weakself.recognizeCompletionHandler(error, nil);
             return;
+        }
+        if(weakself.peakPowerHandler != nil){
+            weakself.peakPowerHandler(peakPower);
         }
         
         [weakself handleData:data];

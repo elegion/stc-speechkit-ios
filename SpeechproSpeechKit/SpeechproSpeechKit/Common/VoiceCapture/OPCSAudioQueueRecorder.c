@@ -114,6 +114,15 @@ OSStatus OPCSAudioQueueSourceStartRecord(OPCSAudioQueueRecorderRef ref) {
         return status;
     }
     
+    UInt32 on = 1;
+    status = AudioQueueSetProperty(ref->queue,kAudioQueueProperty_EnableLevelMetering,&on,sizeof(on));
+    if(status!=noErr)
+    {
+        printf("Error enabling level metering\n");
+        FormatError(status);
+        return status;
+    }
+    
     return noErr;
 }
 
@@ -159,8 +168,20 @@ static void OPCSAudioQueueHandleInputBuffer (
 
     if (ref->isRunning == false)
         return;
+    
+    Float32 peakPower = 0;
+    
+    AudioQueueLevelMeterState meters[1];
+        UInt32 dlen = sizeof(meters);
+        OSStatus Status = AudioQueueGetProperty(inAQ,kAudioQueueProperty_CurrentLevelMeterDB,meters,&dlen);
+        if (Status == 0) {
+            peakPower = meters[0].mPeakPower;
+        }
+
+    
+    
     if(ref->callback)
-        ref->callback(ref,inAQ,inBuffer);
+        ref->callback(ref,inAQ,inBuffer,peakPower);
     
     AudioQueueEnqueueBuffer ( ref->queue, inBuffer, 0, NULL);
 }

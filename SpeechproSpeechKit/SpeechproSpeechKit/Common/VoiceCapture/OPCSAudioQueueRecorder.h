@@ -21,7 +21,7 @@ typedef struct OPCSAudioQueueRecorder* OPCSAudioQueueRecorderRef;
 /**
  * Is type for the callback function which is invoked when the buffer is full
  */
-typedef void(*OPCSAudioQueueRecorderCallbackPointer)(OPCSAudioQueueRecorderRef, AudioQueueRef, AudioQueueBufferRef) ;
+typedef void(*OPCSAudioQueueRecorderCallbackPointer)(OPCSAudioQueueRecorderRef, AudioQueueRef, AudioQueueBufferRef, Float32) ;
 
 /**
  * The constant of the number of buffers

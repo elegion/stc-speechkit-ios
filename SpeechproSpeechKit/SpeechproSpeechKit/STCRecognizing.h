@@ -19,6 +19,7 @@
  */
 
 typedef void (^RecognizingCompletionHandler) ( NSError *error, NSString *result);
+typedef void (^PeakPowerHandler) (Float32 peakPower);
 
 @protocol STCRecognizing <NSObject>
 

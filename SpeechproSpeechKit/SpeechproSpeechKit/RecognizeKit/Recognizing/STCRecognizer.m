@@ -61,7 +61,7 @@
     NSLog(@"%lu",sample);
     self.voiceManager = [[OPCSCaptureVoice2BufferManager alloc] initWithSampleRate:sample];
     __weak typeof(self) weakself = self;
-    self.voiceManager.loadDataBlock = ^(NSData *data, NSError *error) {
+    self.voiceManager.loadDataBlock = ^(NSData *data, NSError *error, Float32 peakPower) {
         if (error) {
             weakself.recognizeCompletionHandler(error, nil);
             return ;
