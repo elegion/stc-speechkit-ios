@@ -19,5 +19,6 @@
  * @param completionHandler The recognition completion handler
  */
 -(void)stopWithCompletionHandler:(RecognizingCompletionHandler)completionHandler;
+-(void)setUpPeakPowerHandler: (PeakPowerHandler)peakPowerHandler;
 
 @end

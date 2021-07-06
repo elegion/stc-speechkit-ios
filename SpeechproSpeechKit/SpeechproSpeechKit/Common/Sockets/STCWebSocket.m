@@ -183,18 +183,17 @@ static const size_t  STCMaxFrameSize        = 32;
     CFHTTPMessageRef urlRequest = CFHTTPMessageCreateRequest(kCFAllocatorDefault,
                                                              requestMethod,
                                                              url,
-                                                             //kCFHTTPVersion1_1);
-                                                             kCFHTTPVersion2_0);
+                                                             kCFHTTPVersion1_1);
     CFRelease(url);
     
     NSNumber *port = _url.port;
     //ALESOL_debug
     if (!port) {
-//        if([self.url.scheme isEqualToString:@"wss"] || [self.url.scheme isEqualToString:@"https"]){
-//            port = @(443);
-//        } else {
- //           port = @(80);
- //       }
+        if([self.url.scheme isEqualToString:@"wss"] || [self.url.scheme isEqualToString:@"https"]){
+            port = @(443);
+        } else {
+            port = @(80);
+        }
     }
     
     NSString *protocols = nil;
@@ -265,10 +264,8 @@ static const size_t  STCMaxFrameSize        = 32;
     self.outputStream = (__bridge_transfer NSOutputStream *)writeStream;
     self.outputStream.delegate = self;
     if([self.url.scheme isEqualToString:@"wss"] || [self.url.scheme isEqualToString:@"https"]) {
-        //[self.inputStream setProperty:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey];
-        //[self.outputStream setProperty:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey];
-         [self.inputStream setProperty:NSStreamSocketSecurityLevelNone forKey:NSStreamSocketSecurityLevelKey];
-        [self.outputStream setProperty:NSStreamSocketSecurityLevelNone forKey:NSStreamSocketSecurityLevelKey];
+        [self.inputStream setProperty:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey];
+        [self.outputStream setProperty:NSStreamSocketSecurityLevelNegotiatedSSL forKey:NSStreamSocketSecurityLevelKey];
         //
     } else {
         self.certValidated = YES; //not a https session, so no need to check SSL pinning

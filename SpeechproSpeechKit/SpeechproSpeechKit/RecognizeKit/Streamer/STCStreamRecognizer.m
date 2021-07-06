@@ -170,7 +170,7 @@
     __weak typeof(self) weakself = self;
     self.recognizeKit = [[STCRecognizeKitImplementation alloc] init];
     if (self.package!=nil) {
-        [self.recognizeKit streamWithPackage:self.package[@"package_id"]
+        [self.recognizeKit streamWithPackage:self.package[@"model_id"]
                        withCompletionHandler:^(NSError *error, NSDictionary *result) {
                            [weakself handleResult:result withError:error];
         } startSessionHandler: startSessionHandler];
