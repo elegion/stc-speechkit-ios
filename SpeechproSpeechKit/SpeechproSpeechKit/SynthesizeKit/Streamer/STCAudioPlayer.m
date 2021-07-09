@@ -10,24 +10,45 @@
 
 @implementation STCAudioPlayer
 @synthesize queue;
+@synthesize bufferByteSize;
 
 void AQBufferCallback(void *                inUserData ,
                       AudioQueueRef         inAQ,
                       AudioQueueBufferRef   inBuffer) {
     STCAudioPlayer *THIS = (__bridge STCAudioPlayer *)(inUserData);
     
+
+    ssize_t res = 0;
+    
     if(THIS->isRunning) {
-        inBuffer->mPacketDescriptionCount = THIS->bufferByteSize/2;
+        
+        if(THIS->bufferByteSize <= 0){
+            THIS->buffersNum -= 1;
+            if(THIS->buffersNum == 0) {
+                [THIS playEnded];
+            }
+            return;
+        }
+        
+        res = read(THIS->pip_fd[0], inBuffer->mAudioData, THIS->bufferByteSize);
+        THIS->bufferByteSize -= res;
+        inBuffer->mPacketDescriptionCount = res/2;
         
         NSLog(@"mPacketDescriptionCount %d",inBuffer->mPacketDescriptionCount);
         
-        inBuffer->mAudioDataByteSize = THIS->bufferByteSize;
-        
-        if(read(THIS->pip_fd[0], inBuffer->mAudioData, THIS->bufferByteSize) > 0 ){
+        inBuffer->mAudioDataByteSize = res;
+
+        if(res > 0 ){
             AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, NULL);
-            NSLog(@"AudioQueueEnqueueBuffer %d",inBuffer->mAudioDataByteSize);
         }
     }
+}
+
+-(void) playEnded {
+    if( self.delegate != nil) {
+        [[self delegate] playEnded:self];
+    }
+    
 }
 
 -(id)init {
@@ -37,6 +58,8 @@ void AQBufferCallback(void *                inUserData ,
 -(id)initWithSampleRate:(int)sampleRate {
     self = [super init];
     if(self) {
+        sysnLock = [[NSLock alloc]init];
+        buffersNum = 0;
         memset(&playFormat, 0, sizeof(playFormat));
         playFormat.mFormatID = kAudioFormatLinearPCM;
         playFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked ;
@@ -55,10 +78,11 @@ void AQBufferCallback(void *                inUserData ,
     if (isInitialized) {
         return;
     }
-    
-   // bufferByteSize = kBufferSize;
+    [sysnLock lock];
+    bufferByteSize = 0;
     AudioQueueNewOutput(&playFormat, AQBufferCallback, (__bridge void *)(self), nil, nil, 0, &queue);
     for (int i=0; i<kNumberBuffers; i++) {
+        buffersNum += 1;
         AudioQueueAllocateBuffer( queue, kBufferSize, &mBuffers[i]);
     }
     
@@ -72,9 +96,14 @@ void AQBufferCallback(void *                inUserData ,
     if (ret == -1) {
         NSLog(@"create pipe failed");
     }
+    [sysnLock unlock];
 }
 
 -(void)stop  {
+    if(!isInitialized) {
+        return;
+    }
+    [sysnLock lock];
     close(pip_fd[0]);
     close(pip_fd[1]);
     AudioQueueStop(queue, false);
@@ -84,13 +113,17 @@ void AQBufferCallback(void *                inUserData ,
         isRunning = false;
     }
     isInitialized = false;
+    [sysnLock unlock];
 }
 
 -(void)putAudioData:(short*)pcmData withSize:(int)dataSize{
+    [sysnLock lock];
+    if (buffersNum < kNumberBuffers) {
+        [sysnLock unlock];
+        return;
+    }
     if (!isRunning) {
         memcpy(mBuffers[index]->mAudioData, pcmData, dataSize);
-        bufferByteSize = dataSize;
-        NSLog(@"putAudioData %d",dataSize);
         mBuffers[index]->mAudioDataByteSize = dataSize;
         mBuffers[index]->mPacketDescriptionCount = dataSize/2;
         AudioQueueEnqueueBuffer(queue, mBuffers[index], 0, NULL);
@@ -103,11 +136,11 @@ void AQBufferCallback(void *                inUserData ,
             index++;
         }
     } else {
-        NSLog(@"write putAudioData %d",dataSize);
-        bufferByteSize = dataSize;
+        bufferByteSize += dataSize;
         if(write(pip_fd[1], pcmData, dataSize) < 0){
             NSLog(@"write to the pipe failed!");
         }
     }
+    [sysnLock unlock];
 }
 @end

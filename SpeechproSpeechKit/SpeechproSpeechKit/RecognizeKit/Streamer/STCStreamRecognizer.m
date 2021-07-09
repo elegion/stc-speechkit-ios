@@ -15,6 +15,7 @@
 
 @property (nonatomic) PeakPowerHandler peakPowerHandler;
 @property (nonatomic) RecognizingCompletionHandler recognizeCompletionHandler;
+@property (nonatomic) RecognizingCompletionHandler recognizeStopCompletionHandler;
 @property (nonatomic) OPCSCaptureVoice2BufferManager *voiceManager;
 @property (nonatomic) STCRecognizeKitImplementation *recognizeKit;
 @property (nonatomic) STCWebSocket *socket;
@@ -80,7 +81,8 @@
 
 
 -(void)stopWithCompletionHandler:(RecognizingCompletionHandler)completionHandler {
-    self.recognizeCompletionHandler = completionHandler;
+    self.recognizeCompletionHandler = nil;
+    self.recognizeStopCompletionHandler = completionHandler;
     [self.voiceManager stop];
     [self closeSocket];
 }
@@ -94,7 +96,9 @@
     self.socket = [[STCWebSocket alloc] initWithURL:[NSURL URLWithString:urlString] protocols:@[@"chat",@"superchat"]];
     __weak typeof(self) weakself = self;
     self.socket.onText = ^(NSString * _Nullable text) {
-        weakself.recognizeCompletionHandler(nil, text);
+        if( weakself.recognizeCompletionHandler ){
+            weakself.recognizeCompletionHandler(nil, text);
+        }
     };
     self.socket.onConnect = ^{
         weakself.isSocketConnected = YES;
@@ -106,8 +110,11 @@
             }
             [weakself closeSocket];
             return ;
-        }        
-        weakself.recognizeCompletionHandler(nil, nil);
+        }
+        if (weakself.recognizeCompletionHandler) {
+            weakself.recognizeCompletionHandler(nil, nil);
+        }
+        
     };
     
     [self.socket connect];
@@ -118,6 +125,10 @@
         if (self.recognizeCompletionHandler) {
             self.recognizeCompletionHandler(error,  result[@"text"]);
         }
+        if (self.recognizeStopCompletionHandler) {
+            self.recognizeStopCompletionHandler(nil, nil );
+            self.recognizeStopCompletionHandler = nil;
+        }
        // [self.socket disconnect];
     }];
 }
@@ -125,7 +136,10 @@
 -(void)handleResult:(NSDictionary *)result
            withError:(NSError *)error {
     if (error) {
-        self.recognizeCompletionHandler(error, nil);
+        if(self.recognizeCompletionHandler) {
+            self.recognizeCompletionHandler(error, nil);
+        }
+        
         return ;
     }
     [self.voiceManager record];
@@ -155,7 +169,9 @@
     self.voiceManager = [[OPCSCaptureVoice2BufferManager alloc] initWithSampleRate:16000 withMode:OPCSCaptureVoiceModePortion];
     self.voiceManager.loadDataBlock = ^(NSData *data, NSError *error, Float32 peakPower) {
         if (error) {
-            weakself.recognizeCompletionHandler(error, nil);
+            if(weakself.recognizeCompletionHandler){
+                weakself.recognizeCompletionHandler(error, nil);
+            }
             return;
         }
         if(weakself.peakPowerHandler != nil){

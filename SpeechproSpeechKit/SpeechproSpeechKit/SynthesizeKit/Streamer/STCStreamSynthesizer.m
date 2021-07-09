@@ -26,6 +26,8 @@
 @property (nonatomic) BOOL isPlaying;
 @property (nonatomic) BOOL isCanceling;
 
+@property (nonatomic) PlayCompletionHandler playCompletionHandler;
+
 @end
 
 @interface STCStreamSynthesizer(Private)
@@ -44,21 +46,31 @@
 
 @implementation STCStreamSynthesizer
 
-- (void)cancel {
+- (void)cancelWithCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock {
+    __weak typeof(self) weakself = self;
+    self.synthesizeDoneBlock = nil;
+    self.socket.onDisconnect = ^(NSError * _Nullable error) {
+        if( synthesizeDoneBlock ) {
+            synthesizeDoneBlock(nil);
+        }
+        
+        
+    };
     self.isCanceling = YES;
     [self.socket disconnect];
     self.socket.onData = nil;
-    self.socket.onDisconnect = nil;
     self.socket.onConnect = nil;
     [self.audioplayer stop];
 }
 
 - (void)playText:(NSString *)text
        withVoice:(NSString *)voice
-withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock{
+withCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock
+    playCompletionHandle:(PlayCompletionHandler)playCompletionHandler{
     self.isCanceling = NO;
     self.isPlaying = NO;
     self.isPlayerInitialized = NO;
+    self.playCompletionHandler = playCompletionHandler;
     self.startingText = text;
     self.synthesizeKit = [[STCSynthesizeKitImplementation alloc] init];
     self.synthesizeDoneBlock = synthesizeDoneBlock;
@@ -113,7 +125,6 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
         if (weakself.isCanceling) {
             return ;
         }
-        NSLog(@"%lu",data.length);
         
         if (!weakself.isPlayerInitialized) {
             weakself.isPlayerInitialized = YES;
@@ -126,13 +137,20 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
 -(void)configureOnConnect {
     __weak typeof(self) weakself = self;
     self.socket.onConnect = ^{
-        weakself.audioplayer = [[STCAudioPlayer alloc] initWithSampleRate:22050];
+        [weakself setUpPlayer];
         [weakself.socket writeString:weakself.startingText];
         NSLog(@"%@",weakself.startingText);
 //        [weakself.synthesizeKit closeStream:^(NSError *error, NSString *stream) {
-//            
+//
 //        }];
     };
+
+}
+
+
+-(void)setUpPlayer {
+    self.audioplayer = [[STCAudioPlayer alloc] initWithSampleRate:22050];
+    self.audioplayer.delegate = self;
 }
 
 -(void)configureOnDisconnect {
@@ -144,6 +162,13 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
             }
         }
     };
+}
+
+-(void)playEnded: (STCAudioPlayer*)player {
+    if(self.playCompletionHandler != nil){
+        self.playCompletionHandler();
+        self.playCompletionHandler = nil;
+    }
 }
 
 @end

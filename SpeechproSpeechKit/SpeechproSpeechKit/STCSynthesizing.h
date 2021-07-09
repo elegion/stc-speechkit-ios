@@ -19,7 +19,7 @@
 typedef void (^SynthesisCompletionHandler) (NSError *error);
 typedef void (^PlayCompletionHandler) (void);
 
-@protocol STCSynthesizing <NSObject> 
+@protocol STCSynthesizing <NSObject>
 
 /**
  * Synthesizes speech based on text and plays the speech with the specific voice
@@ -32,6 +32,6 @@ typedef void (^PlayCompletionHandler) (void);
 /**
  * Cancel all operations
  */
-           -(void)cancel;
+- (void)cancelWithCompletionHandler:(SynthesisCompletionHandler)synthesizeDoneBlock;
 
 @end

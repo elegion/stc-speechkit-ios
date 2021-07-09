@@ -11,10 +11,18 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #include <unistd.h>
-
+#import "STCSynthesizing.h"
 
 #define kNumberBuffers 3
 #define kBufferSize 100000
+
+@class STCAudioPlayer;
+
+@protocol STCAudioPlayerDelegate <NSObject>
+
+-(void)playEnded: (STCAudioPlayer*)player;
+
+@end
 
 @interface STCAudioPlayer : NSObject
 {
@@ -22,14 +30,17 @@
     AudioQueueBufferRef             mBuffers[kNumberBuffers];
     AudioStreamBasicDescription     playFormat;
     int                             index;
+    int buffersNum;
+    NSLock *sysnLock;
 @public
     Boolean                         isRunning;
     Boolean                         isInitialized;
-    int                             bufferByteSize;
     int                             pip_fd[2];
     UInt32                          numPacketsToRead;
 }
+@property int bufferByteSize;
 @property AudioQueueRef queue;
+@property (weak) id <STCAudioPlayerDelegate> delegate;
 
 -(id)init;
 -(id)initWithSampleRate:(int)sampleRate;
