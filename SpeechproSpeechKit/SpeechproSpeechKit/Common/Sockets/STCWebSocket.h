@@ -27,6 +27,9 @@
 - (nonnull instancetype)initWithURL:(nonnull NSURL *)url
                           protocols:(nullable NSArray*)protocols;
 
+- (nonnull instancetype)initWithURL:(nonnull NSURL *)url
+                          protocols:(nullable NSArray*)protocols
+                              queue:(dispatch_queue_t) queue;
 /**
  * Connects to the host.
  */

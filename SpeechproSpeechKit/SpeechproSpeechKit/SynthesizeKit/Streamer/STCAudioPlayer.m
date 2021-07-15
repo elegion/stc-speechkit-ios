@@ -30,12 +30,10 @@ void AQBufferCallback(void *                inUserData ,
             return;
         }
         
-        res = read(THIS->pip_fd[0], inBuffer->mAudioData, THIS->bufferByteSize);
+        res = read(THIS->pip_fd[0], inBuffer->mAudioData, MIN(THIS->bufferByteSize, 4000));
         THIS->bufferByteSize -= res;
         inBuffer->mPacketDescriptionCount = res/2;
-        
-        NSLog(@"mPacketDescriptionCount %d",inBuffer->mPacketDescriptionCount);
-        
+
         inBuffer->mAudioDataByteSize = res;
 
         if(res > 0 ){

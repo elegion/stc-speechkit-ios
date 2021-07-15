@@ -24,7 +24,7 @@
 @property (nonatomic) STCSynthesizeKitImplementation *synthesizeKit;
 
 @property (nonatomic) BOOL isPlaying;
-@property (nonatomic) BOOL isCanceling;
+@property (atomic) BOOL isCanceling;
 
 @property (nonatomic) PlayCompletionHandler playCompletionHandler;
 
@@ -106,7 +106,7 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
     }
     NSLog(@"startStreamWithURL");
 
-    self.socket = [[STCWebSocket alloc] initWithURL:[NSURL URLWithString:urlString] protocols:@[@"chat",@"superchat"]];
+    self.socket = [[STCWebSocket alloc] initWithURL:[NSURL URLWithString:urlString] protocols:@[@"chat",@"superchat"] queue: dispatch_queue_create("stream.synthesizer.socket.queue", NULL)];
     
     [self configureOnData];
     [self configureOnConnect];
@@ -126,10 +126,13 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
             return ;
         }
         
-        if (!weakself.isPlayerInitialized) {
-            weakself.isPlayerInitialized = YES;
-            [weakself.audioplayer start];
-        }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            if (!weakself.isPlayerInitialized) {
+                weakself.isPlayerInitialized = YES;
+                [weakself.audioplayer start];
+            }
+        });
+        
         [weakself.audioplayer putAudioData:(short*)data.bytes withSize:(int)data.length];
     };
 }
@@ -137,12 +140,14 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
 -(void)configureOnConnect {
     __weak typeof(self) weakself = self;
     self.socket.onConnect = ^{
-        [weakself setUpPlayer];
-        [weakself.socket writeString:weakself.startingText];
-        NSLog(@"%@",weakself.startingText);
-//        [weakself.synthesizeKit closeStream:^(NSError *error, NSString *stream) {
-//
-//        }];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [weakself setUpPlayer];
+            [weakself.socket writeString:weakself.startingText];
+            NSLog(@"%@",weakself.startingText);
+    //        [weakself.synthesizeKit closeStream:^(NSError *error, NSString *stream) {
+    //
+    //        }];
+        });
     };
 
 }
@@ -157,9 +162,11 @@ withCompletionHandler:^(NSError *error, NSObject *result) {
     __weak typeof(self) weakself = self;
     self.socket.onDisconnect = ^(NSError * _Nullable error) {
         if (error) {
-            if (weakself) {
-                weakself.synthesizeDoneBlock(error);
-            }
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if (weakself) {
+                    weakself.synthesizeDoneBlock(error);
+                }
+            });
         }
     };
 }

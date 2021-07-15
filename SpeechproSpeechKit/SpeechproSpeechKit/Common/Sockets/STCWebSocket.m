@@ -111,6 +111,19 @@ static const size_t  STCMaxFrameSize        = 32;
     return self;
 }
 
+- (instancetype)initWithURL:(NSURL *)url protocols:(NSArray*)protocols queue:(dispatch_queue_t) queue {
+    if(self = [super init]) {
+        self.certValidated = NO;
+        self.queue = queue;
+        self.url = url;
+        self.readStack = [NSMutableArray new];
+        self.inputQueue = [NSMutableArray new];
+        self.optProtocols = protocols;
+    }
+    
+    return self;
+}
+
 //Exposed method for connecting to URL provided in init method.
 - (void)connect {
     if(self.isCreated) {
