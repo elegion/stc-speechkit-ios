@@ -126,7 +126,7 @@
             self.recognizeCompletionHandler(error,  result[@"text"]);
         }
         if (self.recognizeStopCompletionHandler) {
-            self.recognizeStopCompletionHandler(nil, nil );
+            self.recognizeStopCompletionHandler(error,  result[@"text"]);
             self.recognizeStopCompletionHandler = nil;
         }
        // [self.socket disconnect];
