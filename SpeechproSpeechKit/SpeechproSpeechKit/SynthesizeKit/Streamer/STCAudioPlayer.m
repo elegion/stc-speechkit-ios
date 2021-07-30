@@ -115,6 +115,9 @@ void AQBufferCallback(void *                inUserData ,
 }
 
 -(void)putAudioData:(short*)pcmData withSize:(int)dataSize{
+    if(!isInitialized) {
+        return;
+    }
     [sysnLock lock];
     if (buffersNum < kNumberBuffers) {
         [sysnLock unlock];
