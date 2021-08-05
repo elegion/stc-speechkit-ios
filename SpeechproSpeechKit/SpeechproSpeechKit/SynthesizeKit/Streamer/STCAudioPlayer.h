@@ -29,11 +29,10 @@
     AudioQueueRef                   queue;
     AudioQueueBufferRef             mBuffers[kNumberBuffers];
     AudioStreamBasicDescription     playFormat;
-    int                             index;
-    int buffersNum;
     NSLock *sysnLock;
+    BOOL audioQueueUsed[kNumberBuffers];
+    BOOL audioQueueIsStarted;
 @public
-    Boolean                         isRunning;
     Boolean                         isInitialized;
     int                             pip_fd[2];
     UInt32                          numPacketsToRead;
