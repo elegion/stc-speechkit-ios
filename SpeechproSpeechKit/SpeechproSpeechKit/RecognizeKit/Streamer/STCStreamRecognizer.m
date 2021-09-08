@@ -36,7 +36,7 @@
 @interface STCStreamRecognizer(Private)
 
 -(void)startSocketWithURL:(NSString *)urlString ;
--(void)closeSocket;
+-(void)closeSocketWithTransformId:(NSString *)transformId;
 
 -(void)handleResult:(NSDictionary *)result
            withError:(NSError *)error;
@@ -76,15 +76,16 @@
 
 - (void)stop {
     [self.voiceManager stop];
-    [self closeSocket];
+    [self closeSocketWithTransformId:(@"")];
 }
 
 
--(void)stopWithCompletionHandler:(RecognizingCompletionHandler)completionHandler {
+-(void)stopWithCompletionHandler:(RecognizingCompletionHandler)completionHandler
+                     transformId:(NSString*) transformId{
     self.recognizeCompletionHandler = nil;
     self.recognizeStopCompletionHandler = completionHandler;
     [self.voiceManager stop];
-    [self closeSocket];
+    [self closeSocketWithTransformId:(transformId)];
 }
 
 @end
@@ -108,29 +109,34 @@
             if (weakself.recognizeCompletionHandler) {
                 weakself.recognizeCompletionHandler(error, nil);
             }
-            [weakself closeSocket];
+            [weakself closeSocketWithTransformId:(@"")];
             return ;
         }
         if (weakself.recognizeCompletionHandler) {
             weakself.recognizeCompletionHandler(nil, nil);
         }
-        
+
     };
-    
+
     [self.socket connect];
 }
 
--(void)closeSocket {
+-(void)closeSocketWithTransformId:(NSString *)transformId {
     [self.recognizeKit closeStreamWithCompletionHandler:^(NSError *error, NSDictionary *result) {
+        NSString *text = result[@"text"];
+        if ([result[@"interpretation"][transformId] length] != 0) {
+            text = result[@"interpretation"][transformId];
+        }
         if (self.recognizeCompletionHandler) {
-            self.recognizeCompletionHandler(error,  result[@"text"]);
+            self.recognizeCompletionHandler(error,  text);
         }
         if (self.recognizeStopCompletionHandler) {
-            self.recognizeStopCompletionHandler(error,  result[@"text"]);
+            self.recognizeStopCompletionHandler(error,  text);
             self.recognizeStopCompletionHandler = nil;
         }
-       // [self.socket disconnect];
-    }];
+        // [self.socket disconnect];
+    }
+                                            transformId: transformId];
 }
 
 -(void)handleResult:(NSDictionary *)result
@@ -139,7 +145,7 @@
         if(self.recognizeCompletionHandler) {
             self.recognizeCompletionHandler(error, nil);
         }
-        
+
         return ;
     }
     [self.voiceManager record];
@@ -177,7 +183,7 @@
         if(weakself.peakPowerHandler != nil){
             weakself.peakPowerHandler(peakPower);
         }
-        
+
         [weakself handleData:data];
     };
 }

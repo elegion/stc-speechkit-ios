@@ -18,7 +18,8 @@
  * Stops the recognition
  * @param completionHandler The recognition completion handler
  */
--(void)stopWithCompletionHandler:(RecognizingCompletionHandler)completionHandler;
+-(void)stopWithCompletionHandler:(RecognizingCompletionHandler)completionHandler
+                     transformId:(NSString*) transformId;
 -(void)setUpPeakPowerHandler: (PeakPowerHandler)peakPowerHandler;
 
 @end

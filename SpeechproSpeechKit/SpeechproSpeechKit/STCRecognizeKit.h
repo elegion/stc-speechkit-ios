@@ -14,7 +14,7 @@
 
 /**
  * Is the block which is called when recognition data is received
- 
+
  * @param error  Data receiving error.
  * @param result Responce data.\nIf data received successfully, 'error' is nil
  */
@@ -22,7 +22,7 @@ typedef void (^RecognizeCompletionHandler) ( NSError *error, NSDictionary *resul
 
 /**
  * Is the block which is called when package list is received
- 
+
  * @param error  Data receiving error.
  * @param result Responce data.\nIf data received successfully, 'error' is nil
  */
@@ -71,6 +71,7 @@ withCompletionHandler:(RecognizeCompletionHandler)completionHandler;
  * Closes the socket
  * @param completionHandler The response block called when the result is received
  */
--(void)closeStreamWithCompletionHandler:(RecognizeCompletionHandler)completionHandler;
+-(void)closeStreamWithCompletionHandler:(RecognizeCompletionHandler)completionHandler
+                            transformId:(NSString*) transformId;
 
 @end

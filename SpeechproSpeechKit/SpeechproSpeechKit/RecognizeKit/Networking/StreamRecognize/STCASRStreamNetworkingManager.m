@@ -55,7 +55,7 @@
                                                 completionHandler:^(NSData * _Nullable data,
                                                                     NSURLResponse * _Nullable response,
                                                                     NSError * _Nullable error) {
-                                                    
+
                                                     NSError *responseError = [self checkError:error
                                                                                  withResponse:response
                                                                                 withErrorData:data];
@@ -63,9 +63,9 @@
                                                         self.completionHandler(responseError, nil);
                                                         return ;
                                                     }
-                                                    
+
                                                     self.result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                    
+
                                                     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                                                     self.transactionId = [httpResponse allHeaderFields][@"X-Transaction-Id"];
                                                     self.completionHandler(nil, self.result);
@@ -88,16 +88,26 @@
 
 }
 
--(void)closeStreamWithCompletionHandler:(CompletionHandler)completionHandler {
+
+-(void)closeStreamWithCompletionHandler:(CompletionHandler)completionHandler
+                            transformId:(NSString *)transformId {
     self.completionHandler = completionHandler;
+    NSMutableDictionary<NSString *, NSNumber *> *bodyParams = @{ }.mutableCopy;
+    if ([transformId length] != 0) {
+        bodyParams = @{
+            @"transform": @[ @{
+                                 @"id":transformId,
+                                 @"type":@"BUILD_IN"                                 
+            }]};
+    };
     NSLog(@"DELETE %@",STCASRURLManager.asrRecognizeStreamClose);
     NSURLSessionDataTask *task = [self taskRequestWithTypeRequest:@"DELETE"
-                                                         withBody:nil
+                                                         withBody:[bodyParams count] == 0 ? nil : bodyParams
                                                      forURLString:self.closeRequest
                                                 completionHandler:^(NSData * _Nullable data,
                                                              NSURLResponse * _Nullable response,
                                                                    NSError * _Nullable error) {
-                                                    
+
                                                     NSError *responseError = [self checkError:error
                                                                                  withResponse:response
                                                                                 withErrorData:data];
@@ -105,9 +115,9 @@
                                                         self.completionHandler(responseError, nil);
                                                         return ;
                                                     }
-                                                    
+
                                                     self.result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                                    
+
                                                     [self finalizeRequest];
                                                 }];
     [task resume];

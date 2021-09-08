@@ -32,6 +32,7 @@
  * Closes the stream transaction and provides the finished result
  * @param completionHandler The recognition completion handler
  */
--(void)closeStreamWithCompletionHandler:(CompletionHandler)completionHandler;
+-(void)closeStreamWithCompletionHandler:(CompletionHandler)completionHandler
+                            transformId:(NSString *)transformId;
 
 @end

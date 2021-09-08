@@ -74,13 +74,16 @@ withCompletionHandler:(RecognizeCompletionHandler)completionHandler {
     } startSessionHandler: startSessionHandler];
 }
 
--(void)closeStreamWithCompletionHandler:(RecognizeCompletionHandler)completionHandler  {
+-(void)closeStreamWithCompletionHandler:(RecognizeCompletionHandler)completionHandler
+                            transformId:(NSString *)transformId {
     self.streamCompletionHandler = completionHandler;
     if ( self.streamNetworkingManager ) {
         [self.streamNetworkingManager closeStreamWithCompletionHandler:^(NSError *error, NSObject *result) {
             NSDictionary *recognizeResult = (NSDictionary *)result;
             self.streamCompletionHandler(error, recognizeResult);
-        }];
+        }
+                                                           transformId: transformId
+         ];
     }
 }
 
