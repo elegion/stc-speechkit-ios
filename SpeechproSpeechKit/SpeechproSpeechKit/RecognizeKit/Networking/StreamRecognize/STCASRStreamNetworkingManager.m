@@ -92,7 +92,7 @@
 -(void)closeStreamWithCompletionHandler:(CompletionHandler)completionHandler
                             transformId:(NSString *)transformId {
     self.completionHandler = completionHandler;
-    NSMutableDictionary<NSString *, NSNumber *> *bodyParams = @{ }.mutableCopy;
+    NSMutableDictionary<NSString *, NSString *> *bodyParams = @{ }.mutableCopy;
     if ([transformId length] != 0) {
         bodyParams = @{
             @"transform": @[ @{
