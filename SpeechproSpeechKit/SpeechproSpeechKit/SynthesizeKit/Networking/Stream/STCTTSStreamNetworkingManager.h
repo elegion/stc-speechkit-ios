@@ -6,10 +6,10 @@
 //  Copyright © 2018 Speech Tehnology Center. All rights reserved.
 //
 
-#import "STCNetworkingManager.h"
+#import "../../../Common/Networking/STCNetworkingManager.h"
 
-#import "STCTTSURLManager.h"
-#import "NSString+Language.h"
+#import "../Base/STCTTSURLManager.h"
+#import "../../../Common/Category/NSString+Language.h"
 
 /**
  * Provides working with the stream synthesize API requests

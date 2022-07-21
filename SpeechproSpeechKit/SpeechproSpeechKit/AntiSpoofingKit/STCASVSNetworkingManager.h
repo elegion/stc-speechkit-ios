@@ -5,7 +5,7 @@
 //  Created by Soloshcheva Aleksandra on 19.09.2018.
 //
 
-#import "STCNetworkingManager.h"
+#import "../Common/Networking/STCNetworkingManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

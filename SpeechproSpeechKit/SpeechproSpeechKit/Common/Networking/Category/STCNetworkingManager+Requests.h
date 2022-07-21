@@ -6,7 +6,7 @@
 //  Copyright © 2018 Speech Tehnology Center. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "STCNetworkingManager.h"
+#import "../STCNetworkingManager.h"
 
 /**
  * Is requests helper

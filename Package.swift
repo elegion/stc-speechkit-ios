@@ -15,6 +15,7 @@ let package = Package(
             name: "SpeechproSpeechKit",
             dependencies: [],
             path: "SpeechproSpeechKit",
+            publicHeadersPath: "SpeechproSpeechKit",
             cSettings: [
                 .headerSearchPath("SpeechproSpeechKit"),
                 .headerSearchPath("SpeechproSpeechKit/AntiSpoofingKit"),

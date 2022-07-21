@@ -6,7 +6,7 @@
 //  Copyright © 2018 Speech Tehnology Center. All rights reserved.
 //
 
-#import "STCNetworkingManager.h"
+#import "../../../Common/Networking/STCNetworkingManager.h"
 
 /**
  * Provides working with the languages API requests
