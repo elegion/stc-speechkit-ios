@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "STCSessionURLManager.h"
+#import "../Common/STCSessionURLManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

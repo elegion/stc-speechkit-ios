@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "STCSessionURLManager.h"
+#import "../STCSessionURLManager.h"
 /**
  * The bases class for all networking managers
  */

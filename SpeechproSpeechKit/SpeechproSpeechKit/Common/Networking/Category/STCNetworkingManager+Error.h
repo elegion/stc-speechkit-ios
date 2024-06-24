@@ -6,7 +6,7 @@
 //  Copyright © 2018 Speech Tehnology Center. All rights reserved.
 //
 
-#import "STCNetworkingManager.h"
+#import "../STCNetworkingManager.h"
 
 /**
  * Category creates and analyses server errors

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "STCSessionURLManager.h"
+#import "../../Common/STCSessionURLManager.h"
 
 /**
  Provides the transport service urls for Diarization API.
